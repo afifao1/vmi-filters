@@ -1,0 +1,10 @@
+.section { @apply section; }
+.wrap { @apply container-max grid md:grid-cols-2 gap-8 items-start; }
+.title { @apply text-2xl md:text-3xl font-semibold; }
+.accent { color: var(--brand); }
+.text { @apply muted mt-3; }
+.bullets { @apply grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8; }
+.bullet {
+  @apply card h-28 flex items-center justify-center text-center p-4 transition;
+}
+.bullet:hover { @apply shadow-md scale-[1.02]; }

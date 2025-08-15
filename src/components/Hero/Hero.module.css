@@ -1,0 +1,9 @@
+.section { @apply section pt-28; }
+.grid { @apply container-max grid md:grid-cols-2 gap-8 items-center; }
+.title { @apply text-4xl md:text-5xl font-bold uppercase mb-4; }
+.list { @apply space-y-2 mb-6 muted; }
+.cta { @apply btn-outline rounded-full px-6 py-2; }
+.image { @apply rounded-2xl shadow-md w-full h-auto; }
+.badgeRow { @apply flex items-center gap-3 mt-4; }
+.badge { @apply inline-flex items-center gap-2 text-sm text-gray-700; }
+.badgeDot { @apply h-2 w-2 rounded-full bg-orange-500; }

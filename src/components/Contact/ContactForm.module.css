@@ -1,0 +1,5 @@
+.form { @apply space-y-4; }
+.field { @apply flex flex-col; }
+.label { @apply text-sm font-medium mb-1; }
+.input { @apply border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)]; }
+.textarea { @apply border rounded-lg px-3 py-2 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-[var(--brand)]; }

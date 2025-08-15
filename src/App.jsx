@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from "./components/Header/Header.jsx";
+import Hero from "./components/Hero/Hero.jsx";
+import CategoriesAccordion from "./components/Categories/CategoriesAccordion.jsx";
+import Brands from "./components/Brands/Brands.jsx";
+import QualitySection from "./components/Quality/QualitySection.jsx";
+import ContactForm from "./components/Contact/ContactForm.jsx";
+import Footer from "./components/Footer/Footer.jsx";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const handleContactSubmit = (data) => {
+    // Здесь можешь отправить форму на свой бэкенд или в телеграм-бота
+    console.log("Contact form:", data);
+    alert("Спасибо! Мы скоро свяжемся с вами.");
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <Header />
 
-export default App
+      <main>
+        {/* Hero-блок как на макете (баннер с CTA) */}
+        <Hero />
+
+        {/* Категории (аккордеон) */}
+        <CategoriesAccordion />
+
+        {/* Блок с брендами */}
+        <Brands />
+
+        {/* Качество/о компании */}
+        <QualitySection />
+
+        {/* Контакты/форма */}
+        <ContactForm onSubmit={handleContactSubmit} />
+      </main>
+
+      <Footer />
+    </>
+  );
+}

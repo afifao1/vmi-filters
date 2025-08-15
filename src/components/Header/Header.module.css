@@ -1,0 +1,21 @@
+.wrapper {
+  @apply fixed top-0 w-full z-50 transition-all;
+}
+.scrolled {
+  @apply bg-white shadow-lg;
+}
+.inner {
+  @apply container-max flex items-center justify-between py-3;
+}
+.nav {
+  @apply hidden md:flex gap-6 text-gray-800;
+}
+.navLink {
+  @apply hover:text-orange-500 transition;
+}
+.cta {
+  @apply btn-primary px-4 py-2 rounded-lg;
+}
+.logo {
+  @apply h-10 w-auto select-none;
+}
