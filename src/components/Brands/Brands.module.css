@@ -1,8 +1,40 @@
-.section { @apply py-12 md:py-16; }
-.header { @apply container-max text-center text-2xl mb-8; }
-.brandsGrid { @apply container-max grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center; }
-.logoWrap { @apply flex items-center justify-center; }
-.logo {
-  @apply h-10 w-auto grayscale opacity-70 transition;
+.section { @apply py-12; }
+
+.title {
+  @apply font-semibold text-gray-900;
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
 }
-.logo:hover { @apply grayscale-0 opacity-100; }
+
+.row {
+  display: flex;
+  gap: 16px;          
+  overflow-x: auto;
+  padding-bottom: 6px;    
+}
+
+.card {
+  width: 204px;
+  height: 102px;
+  background: #fff;
+  border: 1px solid #E5E7EB;   
+  border-radius: 12px;       
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;       
+}
+
+.logo {
+  width: 204px;
+  height: 102px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (min-width: 1200px) {
+  .row { overflow: visible; }
+}
