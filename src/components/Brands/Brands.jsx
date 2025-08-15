@@ -13,7 +13,7 @@ export default function Brands() {
   return (
     <section className={s.section}>
       <h3 className={s.header}>Сотрудничаем с проверенными брендами</h3>
-      <div className={s.grid}>
+      <div className={s.brandsGrid}>
         {logos.map((l) => (
           <div key={l.alt} className={s.logoWrap}>
             <img className={s.logo} src={l.src} alt={l.alt} />

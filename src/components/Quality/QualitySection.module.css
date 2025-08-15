@@ -1,4 +1,4 @@
-.section { @apply section; }
+.section { @apply py-12 md:py-16; }
 .wrap { @apply container-max grid md:grid-cols-2 gap-8 items-start; }
 .title { @apply text-2xl md:text-3xl font-semibold; }
 .accent { color: var(--brand); }

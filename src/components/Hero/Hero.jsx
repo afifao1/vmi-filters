@@ -3,7 +3,7 @@ import s from "./Hero.module.css";
 export default function Hero() {
   return (
     <section className={s.section}>
-      <div className={s.grid}>
+      <div className={s.heroGrid}>
         <div>
           <h1 className={s.title}>Промышленные фильтры</h1>
           <ul className={s.list}>
