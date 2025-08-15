@@ -9,7 +9,6 @@ import "./App.css";
 
 export default function App() {
   const handleContactSubmit = (data) => {
-    // Здесь можешь отправить форму на свой бэкенд или в телеграм-бота
     console.log("Contact form:", data);
     alert("Спасибо! Мы скоро свяжемся с вами.");
   };
@@ -19,19 +18,14 @@ export default function App() {
       <Header />
 
       <main>
-        {/* Hero-блок как на макете (баннер с CTA) */}
         <Hero />
 
-        {/* Категории (аккордеон) */}
         <CategoriesAccordion />
 
-        {/* Блок с брендами */}
         <Brands />
 
-        {/* Качество/о компании */}
         <QualitySection />
 
-        {/* Контакты/форма */}
         <ContactForm onSubmit={handleContactSubmit} />
       </main>
 

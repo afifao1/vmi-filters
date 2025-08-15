@@ -1,9 +1,45 @@
-.section { @apply py-12 md:py-16 pt-28; }
-.heroGrid { @apply container-max grid md:grid-cols-2 gap-8 items-center; }
-.title { @apply text-4xl md:text-5xl font-bold uppercase mb-4; }
-.list { @apply space-y-2 mb-6 muted; }
-.cta { @apply btn-outline rounded-full px-6 py-2; }
-.image { @apply rounded-2xl shadow-md w-full h-auto; }
-.badgeRow { @apply flex items-center gap-3 mt-4; }
-.badge { @apply inline-flex items-center gap-2 text-sm text-gray-700; }
-.badgeDot { @apply h-2 w-2 rounded-full bg-orange-500; }
+.wrap { @apply pt-20 pb-16; }
+
+.gridWrap {
+  display: grid; 
+  @apply items-end gap-10;
+  grid-template-columns: 1fr minmax(520px, 1100px);
+}
+
+.left { @apply pb-6; }
+
+.h1 {
+  @apply font-bold text-gray-900;
+  font-size: 64px;
+  line-height: 72px;
+  letter-spacing: -0.01em;
+}
+
+.bullets { @apply mt-6 space-y-2 text-gray-700; font-size: 16px; line-height: 24px; }
+.bullets li::before { content: "— "; color: #9CA3AF; margin-right: 4px; }
+
+.circleCta {
+  @apply inline-flex items-center justify-center font-semibold text-gray-900;
+  width: 88px;
+  height: 88px;
+  border-radius: 9999px;
+  border: 1px solid #E5E7EB;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.circleCta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.06); }
+
+.right { @apply justify-self-end; }
+
+.heroImg {
+  width: 1100px;
+  height: 630px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .gridWrap { grid-template-columns: 1fr; }
+  .right { @apply justify-self-start; }
+  .heroImg { width: 100%; height: auto; }
+  .h1 { font-size: 40px; line-height: 48px; }
+}

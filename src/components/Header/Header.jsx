@@ -14,13 +14,18 @@ export default function Header() {
   return (
     <header className={cn(s.wrapper, scrolled && s.scrolled)}>
       <div className={s.inner}>
-        <img src="/logo.svg" alt="VMI" className={s.logo} />
+      <img
+        src="/logo.svg"
+        alt="VMI Filters"
+        style={{ width: 147, height: 52, display: "block" }}
+      />
         <nav className={s.nav}>
           <a className={s.navLink} href="#">Главная</a>
           <a className={s.navLink} href="#catalog">Каталог</a>
           <a className={s.navLink} href="#about">О компании</a>
         </nav>
-          <a href="#contact" className={s.cta}>Связаться с менеджером</a>
+
+        <a href="#contact" className={s.cta}>Связаться с менеджером</a>
       </div>
     </header>
   );
