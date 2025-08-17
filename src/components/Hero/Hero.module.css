@@ -1,52 +1,39 @@
-.wrap { @apply pt-20 pb-16; }
+.wrap{ @apply pt-28 pb-20 bg-white; }           
 
-.gridWrap {
-  display: grid;
-  grid-template-columns: 1fr 630px; 
-  align-items: end;
-  gap: 40px;                     
-  overflow: visible;
+.gridWrap{                                      
+  display:grid;
+  grid-template-columns: 1fr 620px;            
+  align-items:end;
+  gap: 40px;
 }
 
-.left { @apply pb-6; }
-
-.h1 {
-  @apply font-bold text-gray-900;
-  font-size: 64px;
-  line-height: 72px;
+.left{ padding-bottom: 24px; }
+.h1{
+  color: var(--text);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 72px;                               
+  line-height: 80px;
   letter-spacing: -0.01em;
 }
+.bullets{ @apply mt-6 space-y-3; color: var(--muted); font-size: 16px; line-height: 24px; }
+.bullets li::before{ content:"— "; color:#9CA3AF; margin-right:6px; }
 
-.bullets { @apply mt-6 space-y-2 text-gray-700; font-size: 16px; line-height: 24px; }
-.bullets li::before { content: "— "; color: #9CA3AF; margin-right: 4px; }
-
-.circleCta {
-  @apply inline-flex items-center justify-center font-semibold text-gray-900;
-  width: 88px;
-  height: 88px;
+.circleCta{
+  display:inline-flex; align-items:center; justify-content:center;
+  width: 120px; height: 120px;                
   border-radius: 9999px;
-  border: 1px solid #E5E7EB;
-  transition: transform .15s ease, box-shadow .15s ease;
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  font-weight: 600;
+  margin-top: 28px;
 }
-.circleCta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.06); }
+.right{ justify-self:end; overflow:visible; }
+.heroImg{ width: 620px; height:auto; object-fit: contain; display:block; }
 
-.right { 
-  justify-self: end; 
-  overflow: visible;          
-}
-
-.heroImg {
-  width: 630px;    
-  height: auto;    
-  object-fit: contain;
-  display: block;
-  border-radius: 0; 
-  box-shadow: none;
-}
-
-
-@media (max-width: 1024px) {
-  .gridWrap { grid-template-columns: 1fr; }
-  .right { justify-self: start; }
-  .heroImg { width: 100%; height: auto; }
+@media (max-width:1024px){
+  .gridWrap{ grid-template-columns: 1fr; }
+  .right{ justify-self:start; }
+  .h1{ font-size: 40px; line-height: 48px; }
+  .heroImg{ width:100%; }
 }

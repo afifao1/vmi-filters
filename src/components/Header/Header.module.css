@@ -1,30 +1,10 @@
-.wrapper {
-  @apply fixed top-0 w-full z-50 transition-all;
-}
-
 .scrolled {
   @apply bg-white shadow-lg;
 }
 
-.inner {
-  @apply container-max flex items-center justify-between;
-  padding-top: 12px; 
-  padding-bottom: 12px;
-}
-
-.nav {
-  @apply hidden md:flex gap-6 text-gray-800;
-}
-.navLink {
-  @apply hover:text-orange-500 transition;
-}
-
-.cta {
-  @apply btn-primary px-4 py-2 rounded-lg;
-}
-
-.logo {
-  width: 147px;
-  height: 52px;
-  display: block;
-}
+.wrapper { @apply fixed top-0 w-full z-50 bg-white; border-bottom: 1px solid var(--line); }
+.inner   { @apply container-max flex items-center justify-between; padding-block: 14px; }
+.nav     { @apply hidden md:flex gap-8 text-[15px] text-[#334155]; }
+.navLink { @apply hover:text-[#0f172a]; }
+.cta     { @apply font-medium text-white px-4 py-2 rounded-lg; background: var(--brand); }
+.logo{ width:147px; height:52px; display:block; }

@@ -1,32 +1,52 @@
 import s from "./QualitySection.module.css";
 
-const items = [
-  "Широкий ассортимент",
-  "Проверенные бренды",
-  "Опытные специалисты",
-  "4.5 Рейтинг Яндекс",
-];
-
 export default function QualitySection() {
   return (
-    <section id="about" className={s.section}>
-      <div className={s.wrap}>
-        <div>
+    <section className={s.section} id="quality">
+      <div className="container-max">
+        {/* Верхняя строка: заголовок слева, текст справа */}
+        <div className={s.top}>
           <h3 className={s.title}>
-            Гарантируем <span className={s.accent}>высокое качество</span> нашей продукции
+            Гарантируем <span className={s.accent}>высокое качество</span>
+            <br /> нашей продукции
           </h3>
+
           <p className={s.text}>
-            Мы ориентируемся на долгосрочные партнерские отношения, поэтому поставляем высококачественные расходные материалы и комплектующие,
-            помогаем подобрать оптимальные решения под задачи клиента, предоставляем сертификаты соответствия и консультируем на каждом этапе заказа.
+            Мы ориентируемся на долгосрочные партнёрские отношения, поэтому
+            поставляем высококачественные расходные материалы и комплектующие,
+            помогаем подобрать оптимальные решения под задачи клиента,
+            предоставляем сертификаты соответствия и консультируем на каждом
+            этапе заказа.
           </p>
         </div>
-        <div className={s.bullets}>
-          {items.map((t) => (
-            <div key={t} className={s.bullet}>
-              {t}
+
+        {/* Заголовок «Преимущества» */}
+        <h4 className={s.benefitsTitle}>Преимущества</h4>
+
+        {/* Круги преимуществ (4 штуки) */}
+        <ul className={s.circles}>
+          <li className={s.circle}>
+            <div className={s.num}>1</div>
+            <div className={s.label}>Широкий<br />ассортимент</div>
+          </li>
+
+          <li className={s.circle}>
+            <div className={s.num}>2</div>
+            <div className={s.label}>Проверенные<br />бренды</div>
+          </li>
+
+          <li className={s.circle}>
+            <div className={`${s.circle} ${s.circleHi}`}>
+              <div className={s.numHi}>4.5</div>
+              <div className={s.label}>Рейтинг Яндекс</div>
             </div>
-          ))}
-        </div>
+          </li>
+
+          <li className={s.circle}>
+            <div className={s.num}>3</div>
+            <div className={s.label}>Опытные<br />специалисты</div>
+          </li>
+        </ul>
       </div>
     </section>
   );

@@ -1,40 +1,8 @@
-.section { @apply py-12; }
-
-.title {
-  @apply font-semibold text-gray-900;
-  font-size: 36px;
-  line-height: 44px;
-  letter-spacing: -0.01em;
-  margin-bottom: 20px;
-}
-
-.row {
-  display: flex;
-  gap: 16px;          
-  overflow-x: auto;
-  padding-bottom: 6px;    
-}
-
-.card {
-  width: 204px;
-  height: 102px;
-  background: #fff;
-  border: 1px solid #E5E7EB;   
-  border-radius: 12px;       
-  box-shadow: 0 8px 24px rgba(0,0,0,.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;       
-}
-
-.logo {
-  width: 204px;
-  height: 102px;
-  object-fit: contain;
-  display: block;
-}
-
-@media (min-width: 1200px) {
-  .row { overflow: visible; }
-}
+.section{ background:#fff; padding-block:56px; }
+.title{ color:var(--text); font-weight:600; font-size:28px; line-height:36px; margin-bottom:16px; }
+.row{ display:flex; gap:16px; overflow-x:auto; padding-bottom:6px; }
+.card{ width:204px; height:102px; background:#fff; border:1px solid var(--line); border-radius:12px;
+       display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+.logo{ width:204px; height:102px; object-fit:contain; display:block; }
+@media (min-width:1200px){ .row{ overflow:visible; } }
+.section { padding-bottom: 64px; }

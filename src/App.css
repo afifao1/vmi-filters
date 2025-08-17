@@ -1,11 +1,10 @@
-:root {
-  --brand: #f97316;
-}
-
-.container-max {
-  max-width: 1120px;
-  margin-inline: auto;
-  padding-inline: 16px;
+:root{
+  --container: 1120px;       
+  --brand: #F97316;           
+  --text: #0F172A;             
+  --muted: #6B7280;          
+  --line: #E5E7EB;           
+  --light: #F6F6F7;             
 }
 
 .section {
@@ -22,5 +21,8 @@
 .btn-primary:hover { opacity: .9; }
 
 .muted {
-  color: #6b7280; /* gray-500 */
+  color: #6b7280; 
 }
+
+.container-max{ max-width: var(--container); margin-inline:auto; padding-inline: 16px; }
+.section{ padding-block: 72px; }
