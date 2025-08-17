@@ -1,9 +1,11 @@
 .wrap { @apply pt-20 pb-16; }
 
 .gridWrap {
-  display: grid; 
-  @apply items-end gap-10;
-  grid-template-columns: 1fr minmax(520px, 1100px);
+  display: grid;
+  grid-template-columns: 1fr 630px; 
+  align-items: end;
+  gap: 40px;                     
+  overflow: visible;
 }
 
 .left { @apply pb-6; }
@@ -28,18 +30,23 @@
 }
 .circleCta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.06); }
 
-.right { @apply justify-self-end; }
+.right { 
+  justify-self: end; 
+  overflow: visible;          
+}
 
 .heroImg {
-  width: 1100px;
-  height: 630px;
-  object-fit: cover;
-  border-radius: 0.5rem;
+  width: 630px;    
+  height: auto;    
+  object-fit: contain;
+  display: block;
+  border-radius: 0; 
+  box-shadow: none;
 }
+
 
 @media (max-width: 1024px) {
   .gridWrap { grid-template-columns: 1fr; }
-  .right { @apply justify-self-start; }
+  .right { justify-self: start; }
   .heroImg { width: 100%; height: auto; }
-  .h1 { font-size: 40px; line-height: 48px; }
 }

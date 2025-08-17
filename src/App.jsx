@@ -5,7 +5,10 @@ import Brands from "./components/Brands/Brands.jsx";
 import QualitySection from "./components/Quality/QualitySection.jsx";
 import ContactForm from "./components/Contact/ContactForm.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import ContactCta from "./components/Contact/ContactCta.jsx";
+
 import "./App.css";
+
 
 export default function App() {
   const handleContactSubmit = (data) => {
@@ -25,6 +28,8 @@ export default function App() {
         <Brands />
 
         <QualitySection />
+
+        <ContactCta />
 
         <ContactForm onSubmit={handleContactSubmit} />
       </main>

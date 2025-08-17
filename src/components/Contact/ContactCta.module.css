@@ -1,0 +1,53 @@
+.wrap { @apply py-16 bg-[#F7F7F8]; } 
+
+.gridWrap {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  @apply gap-10 items-center;
+}
+
+.left { @apply space-y-4; }
+
+.title {
+  @apply font-semibold text-gray-900;
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.01em;
+}
+.accent { color: var(--brand, #F97316); }
+
+.subtitle {
+  @apply text-gray-500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.outlineBtn {
+  @apply inline-flex items-center justify-center font-medium;
+  color: var(--brand, #F97316);
+  border: 1px solid var(--brand, #F97316);
+  height: 44px;                
+  padding: 0 24px;
+  border-radius: 8px;       
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.outlineBtn:hover {
+  background: rgba(249, 115, 22, .06);
+  box-shadow: 0 8px 18px rgba(0,0,0,.05);
+}
+
+.right { @apply justify-self-end; }
+.image {
+  width: 481px; 
+  height: 439px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .gridWrap {
+    grid-template-columns: 1fr;
+  }
+  .right { @apply justify-self-start; }
+  .image { width: 100%; height: auto; }
+}
