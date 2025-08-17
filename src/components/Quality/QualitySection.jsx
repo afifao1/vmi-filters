@@ -4,7 +4,6 @@ export default function QualitySection() {
   return (
     <section className={s.section} id="quality">
       <div className="container-max">
-        {/* Верхняя строка: заголовок слева, текст справа */}
         <div className={s.top}>
           <h3 className={s.title}>
             Гарантируем <span className={s.accent}>высокое качество</span>
@@ -20,10 +19,8 @@ export default function QualitySection() {
           </p>
         </div>
 
-        {/* Заголовок «Преимущества» */}
         <h4 className={s.benefitsTitle}>Преимущества</h4>
 
-        {/* Круги преимуществ (4 штуки) */}
         <ul className={s.circles}>
           <li className={s.circle}>
             <div className={s.num}>1</div>

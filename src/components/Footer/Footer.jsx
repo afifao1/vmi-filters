@@ -1,39 +1,70 @@
+import React from "react";
 import s from "./Footer.module.css";
+
+const contact = {
+  address:
+    "г. Москва, Николоямский переулок, дом 4–6, строение 3, пом. IV, офис 3В",
+  phones: ["8 (926) 255-68-50", "8 (495) 369-27-15"],
+  email: "info@vmi-filtr.ru",
+};
+
+const links = [
+  "Топливные фильтры",
+  "Масляные фильтры",
+  "Воздушные фильтры",
+  "Насосы",
+  "О компании",
+];
 
 export default function Footer() {
   return (
-    <footer className={s.footer}>
-      <div className="container-max grid md:grid-cols-3 gap-8">
-        <div className={s.brand}>
-          <img src="/logo.svg" alt="VMI" className={s.logo} />
-        </div>
+    <footer className={s["ft-footer"]}>
+      <div className={s["ft-bg"]} />
 
-        <div>
-          <h4 className={s.h4}>Категории</h4>
-          <ul className={s.list}>
-            <li><a href="#catalog">Топливные фильтры</a></li>
-            <li><a href="#catalog">Масляные фильтры</a></li>
-            <li><a href="#catalog">Воздушные фильтры</a></li>
-            <li><a href="#catalog">Насосы</a></li>
-          </ul>
-        </div>
+      <div className={`container-max ${s["ft-inner"]}`}>
+        <ul className={s["ft-pills"]}>
+          {links.map((t) => (
+            <li key={t}>
+              <a href="#" className={s["ft-pill"]}>
+                {t}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-        <div>
-          <h4 className={s.h4}>Контакты</h4>
-          <ul className={s.list}>
-            <li>г. Ижевск, Ижевский пр-д, дом 4</li>
-            <li>Пн–Пт: 9:00–18:00</li>
-            <li><a href="tel:+73412999999">+7 (3412) 999-999</a></li>
-            <li><a href="mailto:info@vmi.example">info@vmi.example</a></li>
-          </ul>
+        <div className={s["ft-contacts"]}>
+          <div className={s["ft-col"]}>
+            <div className={s["ft-colTitle"]}>Адрес:</div>
+            <div className={s["ft-colText"]}>{contact.address}</div>
+          </div>
+
+          <div className={s["ft-col"]}>
+            <div className={s["ft-colTitle"]}>Телефон:</div>
+            <div className={s["ft-colText"]}>
+              {contact.phones.map((p) => (
+                <div key={p}>{p}</div>
+              ))}
+            </div>
+          </div>
+
+          <div className={s["ft-col"]}>
+            <div className={s["ft-colTitle"]}>Почта:</div>
+            <a
+              className={`${s["ft-colText"]} ${s["ft-link"]}`}
+              href={`mailto:${contact.email}`}
+            >
+              {contact.email}
+            </a>
+          </div>
         </div>
       </div>
 
-      <div className={s.bottom}>
-        <div className="container-max flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} VMI. Все права защищены.</p>
-          <p className="text-xs text-gray-400">Гарантируем высокое качество нашей продукции</p>
-        </div>
+      <div className={`container-max ${s["ft-bottom"]}`}>
+        <img src="/footer-bg.svg" alt="VMI" className={s["ft-logo"]} />
+        <a href="#" className={s["ft-policy"]}>
+          Политика обработки персональных данных
+        </a>
+        <div className={s["ft-copy"]}>©2025 VMI. Все права защищены</div>
       </div>
     </footer>
   );

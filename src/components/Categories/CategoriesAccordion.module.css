@@ -1,8 +1,8 @@
-.section{ @apply bg-white; padding-block: 56px; border-top:1px solid var(--line); }
+.section{ @apply bg-white; padding-block: 56px;}
 .header{ color: var(--text); font-size: 32px; line-height: 40px; font-weight: 600; text-align: center; }
 .count{ color: var(--brand); font-weight:700; }
 
-.item{ border-bottom:1px solid var(--line); }
+.item{ border-bottom:0; }
 .row{ width:100%; display:flex; align-items:center; justify-content:space-between; padding-block:18px;
       color:#111827; font-size:18px; }
 .panel{ overflow:hidden; transition:max-height .25s ease, padding .25s ease; }

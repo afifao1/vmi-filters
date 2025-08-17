@@ -25,7 +25,8 @@ export default function Header() {
           <a className={s.navLink} href="#about">О компании</a>
         </nav>
 
-        <a href="#contact" className={s.cta}>Связаться с менеджером</a>
+       <a href="#contact" className="btn-outline">Связаться с менеджером</a>
+
       </div>
     </header>
   );

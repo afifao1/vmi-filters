@@ -2,9 +2,9 @@ import s from "./ContactCta.module.css";
 
 export default function ContactCta() {
   return (
-    <section id="contact" className={s.wrap}>
+    <section id="contact" className={s.section}>
       <div className="container-max">
-        <div className={s.gridWrap}>
+        <div className={s.grid}>
           <div className={s.left}>
             <h3 className={s.title}>
               Напишите нам <span className={s.accent}>прямо сейчас</span>
@@ -14,11 +14,8 @@ export default function ContactCta() {
               Наши менеджеры свяжутся с вами в ближайшее время
             </p>
 
-            <a href="#"
-               className={s.outlineBtn}
-               onClick={(e) => e.preventDefault()}>
-              Оставить заявку
-            </a>
+            <button className="btn-outline">Оставить заявку</button>
+
           </div>
 
           <div className={s.right}>

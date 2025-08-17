@@ -1,4 +1,4 @@
-.section { background:#fff; padding-block: 72px; }
+.section { background:#fff; padding-block: 72px;border-top:0; border-bottom:0;}
 
 .top {
   display:grid;

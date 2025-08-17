@@ -11,18 +11,42 @@
   padding-block: 64px;
 }
 
-.btn-primary {
-  background: var(--brand);
-  color: #fff;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  transition: opacity .2s ease;
+.btn-outline {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:48px;
+  padding:0 24px;
+  border:2px solid #F97316; 
+  background:#fff;        
+  color:#F97316;       
+  border-radius:8px;
+  font-weight:600;
+  font-size:16px;
+  line-height:1.2;
+  transition:all .2s ease;
+  cursor:pointer;
 }
-.btn-primary:hover { opacity: .9; }
+.btn-outline:hover {
+  background:#F97316; 
+  color:#fff;      
+}
+.btn-outline:active {
+  opacity:.85;
+}
+
 
 .muted {
   color: #6b7280; 
 }
 
+html, body { background: #ffffff; }
 .container-max{ max-width: var(--container); margin-inline:auto; padding-inline: 16px; }
 .section{ padding-block: 72px; }
+
+.cta     { @apply btn-primary; }  
+
+main > section {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}

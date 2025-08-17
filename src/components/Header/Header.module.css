@@ -2,9 +2,9 @@
   @apply bg-white shadow-lg;
 }
 
-.wrapper { @apply fixed top-0 w-full z-50 bg-white; border-bottom: 1px solid var(--line); }
+.wrapper { @apply fixed top-0 w-full z-50 bg-white; }
 .inner   { @apply container-max flex items-center justify-between; padding-block: 14px; }
 .nav     { @apply hidden md:flex gap-8 text-[15px] text-[#334155]; }
 .navLink { @apply hover:text-[#0f172a]; }
-.cta     { @apply font-medium text-white px-4 py-2 rounded-lg; background: var(--brand); }
+.cta     { @apply btn-primary; } 
 .logo{ width:147px; height:52px; display:block; }
