@@ -160,6 +160,7 @@ export default function About() {
                   className="mt-6 h-11 w-[280px] rounded-md border border-orange-500
                              text-orange-500 hover:bg-orange-500 hover:text-white
                              transition"
+                  data-open-contact
                 >
                   Оставить заявку
                 </button>

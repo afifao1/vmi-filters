@@ -10,16 +10,20 @@ export default function Modal({
 }) {
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose?.();
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = prev);
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [open]);
 
   if (!open) return null;
@@ -39,8 +43,8 @@ export default function Modal({
         <button
           onClick={onClose}
           aria-label="Закрыть"
-          className="absolute right-3.5 top-3.5 grid place-items-center w-9 h-9 rounded-md border border-slate-200
-                     text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition"
+          className="absolute right-3.5 top-3.5 grid place-items-center w-9 h-9 rounded-md
+                     border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition"
         >
           ×
         </button>

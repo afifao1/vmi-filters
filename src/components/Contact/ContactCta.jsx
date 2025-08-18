@@ -14,7 +14,10 @@ export default function ContactCta() {
               Наши менеджеры свяжутся с вами в ближайшее время
             </p>
 
-            <button className="btn-outline">Оставить заявку</button>
+            <button type="button" className="btn-outline" data-open-contact>
+              Оставить заявку
+            </button>
+
 
           </div>
 

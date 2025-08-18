@@ -1,14 +1,12 @@
-// src/components/Header/Header.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import s from "./Header.module.css";
 import { cn } from "../../lib/cn";
-
-import ContactModal from "../Modal/ContactModal";
+import { useContactModal } from "../../features/contact-modal/ContactModalProvider";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { open } = useContactModal(); // ← функция открытия модалки
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -17,35 +15,21 @@ export default function Header() {
   }, []);
 
   return (
-    <>
-      <header className={cn(s.wrapper, scrolled && s.scrolled)}>
-        <div className={s.inner}>
-          <img
-            src="/logo.svg"
-            alt="VMI"
-            style={{ width: 147, height: 52, display: "block" }}
-          />
+    <header className={cn(s.wrapper, scrolled && s.scrolled)}>
+      <div className={s.inner}>
+        <img src="/logo.svg" alt="VMI" style={{ width: 147, height: 52, display: "block" }} />
 
-          <nav className={s.nav}>
-            <Link className={s.navLink} to="/">Главная</Link>
-            <a className={s.navLink} href="/#catalog">Каталог</a>
-            <Link className={s.navLink} to="/about">О компании</Link>
-          </nav>
+        <nav className={s.nav}>
+          <Link className={s.navLink} to="/">Главная</Link>
+          <a className={s.navLink} href="/#catalog">Каталог</a>
+          <Link className={s.navLink} to="/about">О компании</Link>
+        </nav>
 
-          <button
-            type="button"
-            className="btn-outline"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <a href="#" className="btn-outline" data-open-contact>
             Связаться с менеджером
-          </button>
-        </div>
-      </header>
-
-      <ContactModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
+          </a>
+          
+      </div>
+    </header>
   );
 }
