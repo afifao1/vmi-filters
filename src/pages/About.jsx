@@ -135,31 +135,40 @@ export default function About() {
       </section>
 
 
-      <section className="py-12 md:py-16">
-        <div className="container-max grid items-end gap-8 md:grid-cols-[1fr,420px]">
-          <div className="max-w-xl">
-            <h3 className="text-slate-900 text-3xl md:text-4xl font-semibold">
-              Напишите нам <span className="text-orange-500">прямо сейчас</span>
-            </h3>
-            <p className="text-slate-600 mt-3">Наши менеджеры свяжутся с вами в ближайшее время.</p>
-
-            <form className="mt-5 flex max-w-md">
-              <input
-                type="text"
-                placeholder="Оставить заявку"
-                className="flex-1 h-11 rounded-md border-2 border-orange-400 px-4 text-slate-900 placeholder-slate-500 focus:outline-none"
+      <section className="py-10 md:py-14">
+        <div className="container-max">
+          <div className="border-y border-slate-200">
+            <div className="grid gap-8 md:gap-10 md:grid-cols-[1fr,440px] items-start py-8 md:py-10">
+              <div>
+                <h3 className="text-slate-900 text-[34px] md:text-[44px] leading-tight font-light">
+                  Напишите нам <span className="text-orange-500 font-normal">прямо сейчас</span>
+                </h3>
+                
+                <p className="text-slate-600 mt-3 font-normal">
+                  Наши менеджеры свяжутся с вами в ближайшее время.
+                </p>
+                
+                <button
+                  type="button"
+                  className="mt-6 h-11 w-[280px] rounded-md border border-orange-500
+                             text-orange-500 hover:bg-orange-500 hover:text-white
+                             transition"
+                >
+                  Оставить заявку
+                </button>
+              </div>
+                
+              <img
+                src="/images/contact.png"   
+                alt=""
+                className="justify-self-end w-[320px] md:w-[440px] drop-shadow-2xl md:translate-x-4"
+                loading="lazy"
               />
-              <button
-                type="submit"
-                className="ml-3 h-11 px-5 rounded-lg border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition"
-              >
-                Отправить
-              </button>
-            </form>
+            </div>
           </div>
-          <img src="/images/filters-cta.png" alt="" className="w-full max-w-[420px] justify-self-end" />
         </div>
       </section>
+
     </main>
   );
 }
