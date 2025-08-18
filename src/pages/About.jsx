@@ -100,24 +100,30 @@ export default function About() {
 
       <section className="py-12 md:py-16">
         <div className="container-max">
+        
           <div className="relative pb-8 md:pb-10">
-            <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
-            <div className="absolute inset-x-0 bottom-0 h-px bg-slate-200" />
-  
+            <div
+              className="absolute inset-x-0 top-0 h-px bg-slate-200 opacity-0 pointer-events-none"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 h-px bg-slate-200 opacity-0 pointer-events-none"
+              aria-hidden="true"
+            />
+      
             <div className="grid gap-6 md:gap-10 md:grid-cols-[420px,1fr]">
               <h2 className="leading-tight font-semibold text-[34px] md:text-[40px]">
                 <span className="text-orange-500">Сертификаты</span><br />
                 <span className="text-slate-900">брендов</span>
               </h2>
-  
               <p className="text-slate-600 text-[15px] leading-7 max-w-[540px]">
-                Сертификаты перечисленных брендов в активе компании — это доказательство стабильности
-                и успешности предприятия, большого опыта и доверия покупателей.
+                Сертификаты перечисленных брендов в активе компании — это доказательство
+                стабильности и успешности предприятия, большого опыта и доверия покупателей.
               </p>
             </div>
           </div>
-  
-          <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {["1","2","3","4"].map(n => (
               <div
                 key={n}
@@ -131,23 +137,24 @@ export default function About() {
               </div>
             ))}
           </div>
+          
         </div>
       </section>
 
 
+
       <section className="py-10 md:py-14">
         <div className="container-max">
-          <div className="border-y border-slate-200">
             <div className="grid gap-8 md:gap-10 md:grid-cols-[1fr,440px] items-start py-8 md:py-10">
               <div>
                 <h3 className="text-slate-900 text-[34px] md:text-[44px] leading-tight font-light">
                   Напишите нам <span className="text-orange-500 font-normal">прямо сейчас</span>
                 </h3>
-                
+
                 <p className="text-slate-600 mt-3 font-normal">
                   Наши менеджеры свяжутся с вами в ближайшее время.
                 </p>
-                
+
                 <button
                   type="button"
                   className="mt-6 h-11 w-[280px] rounded-md border border-orange-500
@@ -157,7 +164,7 @@ export default function About() {
                   Оставить заявку
                 </button>
               </div>
-                
+
               <img
                 src="/images/contact.png"   
                 alt=""
@@ -166,7 +173,6 @@ export default function About() {
               />
             </div>
           </div>
-        </div>
       </section>
 
     </main>
