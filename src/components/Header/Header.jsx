@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import s from "./Header.module.css";
 import { cn } from "../../lib/cn";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
@@ -14,28 +14,16 @@ export default function Header() {
   return (
     <header className={cn(s.wrapper, scrolled && s.scrolled)}>
       <div className={s.inner}>
-        <img
-          src="/logo.svg"
-          alt="VMI Filter"
-          className={s.logo}
-          width={147}
-          height={52}
-        />
+        {/* логотип оставь как было */}
+        <img src="/footer-bg.svg" alt="" style={{ width: 147, height: 52, display: "block" }} />
 
-      <nav className={s.nav} aria-label="Главная навигация">
-        <a className={s.navLink} href="#" aria-current="page">Главная</a>
+        <nav className={s.nav}>
+          <Link className={s.navLink} to="/">Главная</Link>
+          <a className={s.navLink} href="/#catalog">Каталог</a>
+          <Link className={s.navLink} to="/about">О компании</Link>
+        </nav>
 
-        <a className={s.navLink} href="#catalog">
-          Каталог
-          <svg className={s.caret} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </a>
-
-        <a className={s.navLink} href="#about">О компании</a>
-      </nav>
-
-        <a href="#contact" className="btn-outline">Связаться с менеджером</a>
+        <a href="/#contact" className="btn-outline">Связаться с менеджером</a>
       </div>
     </header>
   );

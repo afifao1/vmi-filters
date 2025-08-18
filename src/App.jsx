@@ -1,38 +1,20 @@
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header.jsx";
-import Hero from "./components/Hero/Hero.jsx";
-import CategoriesAccordion from "./components/Categories/CategoriesAccordion.jsx";
-import Brands from "./components/Brands/Brands.jsx";
-import QualitySection from "./components/Quality/QualitySection.jsx";
-import ContactForm from "./components/Contact/ContactForm.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-import ContactCta from "./components/Contact/ContactCta.jsx";
+
+import Home from "./pages/Home.jsx";
+import About from "./pages/About.jsx";
 
 import "./App.css";
 
-
 export default function App() {
-  const handleContactSubmit = (data) => {
-    console.log("Contact form:", data);
-    alert("Спасибо! Мы скоро свяжемся с вами.");
-  };
-
   return (
     <>
       <Header />
-
-      <main>
-        <Hero />
-
-        <CategoriesAccordion />
-
-        <Brands />
-
-        <QualitySection />
-
-        <ContactCta />
-
-      </main>
-
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
       <Footer />
     </>
   );
