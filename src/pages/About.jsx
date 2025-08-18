@@ -45,29 +45,42 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
-        <div className="container-max grid items-start gap-10 md:grid-cols-[320px,1fr]">
-          <div>
-            <h2 className="text-slate-900 text-3xl md:text-4xl font-semibold">
-              Сертификаты брендов
+    <section className="py-12 md:py-16">
+      <div className="container-max">
+        <div className="relative pb-8 md:pb-10">
+          <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-slate-200" />
+
+          <div className="grid gap-6 md:gap-10 md:grid-cols-[420px,1fr]">
+            <h2 className="leading-tight font-semibold text-[34px] md:text-[40px]">
+              <span className="text-orange-500">Сертификаты</span><br />
+              <span className="text-slate-900">брендов</span>
             </h2>
-            <p className="text-slate-600 mt-4">
-              Сертификаты проверенных брендов в открытом доступе — это
-              подтверждение стабильных поставок и качества продукции.
+
+            <p className="text-slate-600 text-[15px] leading-7 max-w-[540px]">
+              Сертификаты перечисленных брендов в активе компании — это доказательство стабильности
+              и успешности предприятия, большого опыта и доверия покупателей.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["1","2","3","4"].map(n => (
-              <img
-                key={n}
-                src={`/images/cert-${n}.jpg`}
-                alt={`Сертификат ${n}`}
-                className="bg-white border border-slate-200 rounded-lg shadow-sm p-2 w-full"
-              />
-            ))}
-          </div>
         </div>
-      </section>
+
+        <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {["1","2","3","4"].map(n => (
+            <div
+              key={n}
+              className="bg-white border border-slate-200 rounded-xl shadow-sm p-3 flex items-center justify-center"
+            >
+              <img
+                src={`/images/cert-${n}.png`}
+                alt={`Сертификат ${n}`}
+                className="h-[320px] lg:h-[360px] w-auto object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
 
       <section className="py-12 md:py-16">
         <div className="container-max grid items-end gap-8 md:grid-cols-[1fr,420px]">

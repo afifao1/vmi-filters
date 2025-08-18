@@ -14,8 +14,7 @@ export default function Header() {
   return (
     <header className={cn(s.wrapper, scrolled && s.scrolled)}>
       <div className={s.inner}>
-        {/* логотип оставь как было */}
-        <img src="/footer-bg.svg" alt="" style={{ width: 147, height: 52, display: "block" }} />
+        <img src="/logo.svg" alt="" style={{ width: 147, height: 52, display: "block" }} />
 
         <nav className={s.nav}>
           <Link className={s.navLink} to="/">Главная</Link>
