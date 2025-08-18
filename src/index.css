@@ -5,17 +5,28 @@
 
 @layer base {
   :root {
-    --brand: #f97316; 
+    --brand: #f97316;
   }
   html, body, #root { height: 100%; }
-  body { @apply text-gray-900 bg-white antialiased; }
+  body {
+    @apply text-gray-900 bg-white antialiased;
+    font-family: "Raleway", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  }
 }
 
+
 @layer components {
-  .container-max { @apply max-w-6xl mx-auto px-4; }
+  .container-max { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 16px; padding-right: 16px; }
   .btn { @apply inline-flex items-center justify-center rounded-md font-medium transition; }
   .btn-primary { @apply btn bg-orange-500 text-white hover:bg-orange-600; }
-  .btn-outline { @apply btn border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white; }
+  .btn-outline {
+    @apply btn;
+    height: 44px;                    
+    padding: 0 18px;                 
+    border: 2px solid #F18B2E;       
+    color: #F18B2E;
+    border-radius: 8px;              
+  }
   .card { @apply rounded-2xl shadow-sm border border-gray-100 bg-white; }
   .muted { @apply text-gray-600; }
   .section { @apply py-12 md:py-16; }
