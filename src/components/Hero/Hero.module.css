@@ -1,39 +1,113 @@
-.wrap{ @apply pt-28 pb-20 bg-white; }           
+/* Отступ сверху, чтобы не заезжать под header */
+.wrap{ @apply pt-28 pb-20 bg-white; }
 
-.gridWrap{                                      
-  display:grid;
-  grid-template-columns: 1fr 620px;            
-  align-items:end;
+/* Сетка секции: текст слева, изображение справа */
+.gridWrap{
+  display: grid;
+  grid-template-columns: 1fr 620px; /* ширина правой колонки под картинку */
+  align-items: end;
   gap: 40px;
 }
 
-.left{ padding-bottom: 24px; }
+/* Левая колонка — делаем relative, чтобы круг позиционировался внутри */
+.left{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 48px; /* чтобы круг не перекрывал нижний край */
+
+  /* Координаты круга как в Figma (можешь менять под пиксели макета) */
+  --circle-top: 360px;   /* расстояние от верхней границы .left */
+  --circle-left: 500px;   /* расстояние от левого края .left */
+
+  /* Для лёгкой адаптации можно использовать clamp:
+     --circle-top: clamp(260px, 34vw, 360px);
+     --circle-left: clamp(40px, 8vw, 120px);
+  */
+}
+
+/* Заголовок */
 .h1{
-  color: var(--text);
+  color: #111827;
   font-weight: 800;
   text-transform: uppercase;
-  font-size: 72px;                               
-  line-height: 80px;
+  font-size: 96px;
+  line-height: 104px;
   letter-spacing: -0.01em;
 }
-.bullets{ @apply mt-6 space-y-3; color: var(--muted); font-size: 16px; line-height: 24px; }
-.bullets li::before{ content:"— "; color:#9CA3AF; margin-right:6px; }
+
+/* Список */
+.bullets{
+  margin-top: 8px;
+  color: #6B7280;
+  font-family: "Raleway", ui-sans-serif, system-ui;
+  font-size: 20px;
+  line-height: 28px;
+}
+.bullets li{
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+.bullets li::before{
+  content: "— ";
+  color: #9CA3AF;
+  margin-right: 8px;
+}
 
 .circleCta{
-  display:inline-flex; align-items:center; justify-content:center;
-  width: 120px; height: 120px;                
-  border-radius: 9999px;
-  border: 1px solid var(--brand);
-  color: var(--brand);
-  font-weight: 600;
-  margin-top: 28px;
-}
-.right{ justify-self:end; overflow:visible; }
-.heroImg{ width: 620px; height:auto; object-fit: contain; display:block; }
+  position: absolute;
+  top: var(--circle-top);
+  left: var(--circle-left);
 
-@media (max-width:1024px){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px solid #F97316;
+
+  color: #F18B2E;
+  background: transparent;
+  text-decoration: none;
+
+  font-family: "Raleway", ui-sans-serif, system-ui;
+  font-weight: 500;     
+  font-size: 20px;
+  letter-spacing: -0.01em;
+
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.circleCta:hover{
+  background: #F18B2E;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(241,139,46,.25);
+}
+.circleCta:active{
+  transform: scale(0.985);
+}
+.circleCta:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(241,139,46,.35);
+}
+
+.right{ justify-self: end; overflow: visible; }
+.heroImg{ width: 620px; height: auto; object-fit: contain; display: block; }
+
+@media (max-width: 1200px){
+  .h1{ font-size: 72px; line-height: 80px; }
+  .left{ --circle-top: 300px; --circle-left: 72px; }
+}
+@media (max-width: 1024px){
   .gridWrap{ grid-template-columns: 1fr; }
-  .right{ justify-self:start; }
+  .right{ justify-self: start; }
+  .heroImg{ width: 100%; }
+  .circleCta{
+    position: static;
+    margin-top: 24px;
+  }
   .h1{ font-size: 40px; line-height: 48px; }
-  .heroImg{ width:100%; }
 }

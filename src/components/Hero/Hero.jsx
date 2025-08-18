@@ -14,7 +14,9 @@ export default function Hero() {
               <li>Обеспечивают долгосрочную эффективность</li>
             </ul>
 
-            <a href="#catalog" className={s.circleCta}>Каталог</a>
+            <a href="#catalog" className={s.circleCta} aria-label="Перейти в каталог">
+              Каталог
+            </a>
           </div>
 
           <div className={s.right}>
