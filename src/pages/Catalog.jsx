@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 /** ------------------ демо-данные каталога ------------------ */
 const PRODUCTS = [
@@ -6,9 +7,9 @@ const PRODUCTS = [
     id: 1,
     title: "Портативный Очиститель Масла Серии BLYJ",
     manufacturer: "KNELSON",
-    status: "in_stock",      
-    type: "fuel",            
-    power: 220,              
+    status: "in_stock",
+    type: "fuel",
+    power: 220,
     img: "/images/filters.png",
     popularity: 5,
   },
@@ -185,7 +186,6 @@ function Card({ p }) {
   return (
     <div className="group">
       <div className="aspect-[4/3] rounded-xl border border-slate-200 bg-white grid place-items-center overflow-hidden">
-        {/* если нет фото — просто плейсхолдер */}
         <img
           src={p.img}
           alt=""
@@ -232,6 +232,25 @@ export default function Catalog() {
 
   const [powers, setPowers] = useState([]); 
   const [sort, setSort] = useState("popular"); 
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const t = searchParams.get("type");
+    if (!t) return;
+
+    // сбрасываем остальные фильтры и включаем только выбранный тип
+    setQ("");
+    setStatusIn(false);
+    setStatusPre(false);
+    setPowers([]);
+    setSort("popular");
+
+    setTypeFuel(t === "fuel");
+    setTypeOil(t === "oil");
+    setTypeAir(t === "air");
+    setTypePump(t === "pump");
+  }, [searchParams]);
 
   // применяем фильтры
   const filtered = useMemo(() => {
@@ -365,7 +384,7 @@ export default function Catalog() {
             </div>
           </Section>
 
-          {/* Сброс / Применить (фильтры у нас применяются сразу; «Применить» — просто кнопка) */}
+          {/* Сброс / Применить */}
           <div className="flex items-center justify-between pt-1">
             <button
               type="button"
@@ -425,7 +444,6 @@ export default function Catalog() {
           )}
         </section>
       </div>
-
     </main>
   );
 }
