@@ -1,4 +1,5 @@
 import s from "./QualitySection.module.css";
+import "./Advantages.css"; 
 
 export default function QualitySection() {
   return (
@@ -19,31 +20,31 @@ export default function QualitySection() {
           </p>
         </div>
 
-        <h4 className={s.benefitsTitle}>Преимущества</h4>
+        <section className="advantages">
+          <h2>Преимущества</h2>
 
-        <ul className={s.circles}>
-          <li className={s.circle}>
-            <div className={s.num}>1</div>
-            <div className={s.label}>Широкий<br />ассортимент</div>
-          </li>
-
-          <li className={s.circle}>
-            <div className={s.num}>2</div>
-            <div className={s.label}>Проверенные<br />бренды</div>
-          </li>
-
-          <li className={s.circle}>
-            <div className={`${s.circle} ${s.circleHi}`}>
-              <div className={s.numHi}>4.5</div>
-              <div className={s.label}>Рейтинг Яндекс</div>
+          <div className="advantages-grid">
+            <div className="advantages-item">
+              <span>1</span>
+              <p>Широкий ассортимент</p>
             </div>
-          </li>
 
-          <li className={s.circle}>
-            <div className={s.num}>3</div>
-            <div className={s.label}>Опытные<br />специалисты</div>
-          </li>
-        </ul>
+            <div className="advantages-item">
+              <span>2</span>
+              <p>Проверенные бренды</p>
+            </div>
+
+            <div className="advantages-item center">
+              <span>4,5</span>
+              <p>Рейтинг Яндекс</p>
+            </div>
+
+            <div className="advantages-item">
+              <span>3</span>
+              <p>Опытные специалисты</p>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   );

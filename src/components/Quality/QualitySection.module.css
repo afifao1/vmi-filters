@@ -1,83 +1,40 @@
-.section { background:#fff; padding-block: 72px;border-top:0; border-bottom:0;}
-
-.top {
-  display:grid;
-  grid-template-columns: 520px 1fr;  
-  gap: 32px;
-  align-items:start;
-  margin-bottom: 56px;             
-}
-
-.title {
-  color:#111827;
-  font-weight:600;
-  font-size:48px;                  
-  line-height:56px;
-  letter-spacing:-0.01em;
-}
-.accent { color: var(--brand, #F97316); }
-
-.text {
-  color: #6B7280;
-  font-size: 15px;
-  line-height: 24px;
-  max-width: 460px;                
-}
-
-.benefitsTitle {
-  color:#111827;
-  font-weight:600;
-  font-size:36px;
-  line-height:44px;
-  margin-bottom: 24px;
-}
-
-.circles {
-  display:grid;
-  grid-template-columns: repeat(4, 260px);
-  gap: 24px;
-  align-items:center;
-}
-
-.circle {
-  width:260px;
-  height:260px;
-  border:1px dashed var(--line, #E5E7EB);
-  border-radius:9999px;
-  display:grid;
-  place-items:center;
-  text-align:center;
+.section{
   background:#fff;
+  padding-top:120px;       
+  padding-bottom:180px;   
+  color:#0F172A;
 }
 
-.num {
-  color:#111827;
+.top{
+  display:grid;
+  grid-template-columns: 560px 1fr;
+  gap:56px;
+  align-items:start;
+  margin-bottom:180px;   
+}
+
+.title{
+  font-size:48px;
+  line-height:56px;
   font-weight:600;
-  font-size:28px;
-  line-height:1;
-  margin-bottom: 8px;
+  letter-spacing:-0.01em;
+  color:#111827;
 }
+.accent{ color:#F58220; }
 
-.label {
+.text{
+  max-width:520px;
   color:#6B7280;
-  font-size:14px;
-  line-height:20px;
+  font-size:15px;
+  line-height:24px;
 }
 
-.circleHi { border-style: dashed; }
-.numHi {
-  color: var(--brand, #F97316);
-  font-weight:700;
-  font-size:40px;
-  line-height:1;
-  margin-bottom: 8px;
-}
-
-@media (max-width: 1200px) {
-  .circles { grid-template-columns: repeat(2, 260px); }
-}
-@media (max-width: 640px) {
-  .top { grid-template-columns: 1fr; }
-  .text { max-width: none; }
-  .circles { grid-template-columns: 1fr; justify-items: center; }
+@media (max-width:1024px){
+  .top{
+    grid-template-columns:1fr;
+    gap:24px;
+    text-align:center;
+  }
+  .text{ margin:0 auto; }
+  .section{ padding-top:72px; padding-bottom:120px; }
 }
