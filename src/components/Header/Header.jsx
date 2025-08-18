@@ -6,7 +6,7 @@ import { useContactModal } from "../../features/contact-modal/ContactModalProvid
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const { open } = useContactModal(); // ← функция открытия модалки
+  const { open } = useContactModal(); 
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -21,7 +21,7 @@ export default function Header() {
 
         <nav className={s.nav}>
           <Link className={s.navLink} to="/">Главная</Link>
-          <a className={s.navLink} href="/#catalog">Каталог</a>
+          <Link className={s.navLink} to="/catalog">Каталог</Link>  
           <Link className={s.navLink} to="/about">О компании</Link>
         </nav>
 
