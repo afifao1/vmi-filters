@@ -1,5 +1,6 @@
 import React from "react";
 import s from "./Footer.module.css";
+import bg from "../../../public/footer-bg2.svg";
 
 const contact = {
   address:
@@ -19,7 +20,9 @@ const links = [
 export default function Footer() {
   return (
     <footer className={s["ft-footer"]}>
-      <div className={s["ft-bg"]} />
+      {/* <div className={s["ft-bg"]} /> */}
+
+      <img src={bg} className="absolute w-[100vw]  right-0"/>
 
       <div className={`container-max ${s["ft-inner"]}`}>
         <ul className={s["ft-pills"]}>
