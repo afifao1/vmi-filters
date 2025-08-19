@@ -5,14 +5,15 @@
 @layer base {
   :root {
     --brand: #f97316;
-    --page-bg: #F7F7F4; /* <-- нужный фон, можно подбирать */
+    --page-bg: #F7F6F2;
+
   }
 
   html, body, #root { height: 100%; }
 
   body {
-    @apply text-slate-900 antialiased; /* УБРАЛ bg-white */
-    background-color: var(--page-bg);  /* <-- общий фон страницы */
+    @apply text-slate-900 antialiased;
+    background-color: var(--page-bg); 
     font-family: "Raleway", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
   }
 }
@@ -29,6 +30,6 @@
     color: #F18B2E;
     border-radius: 8px;
   }
-  .card { @apply rounded-2xl shadow-sm border border-gray-100 bg-white; } /* карточки оставляем белыми */
+  .card { @apply rounded-2xl shadow-sm border border-gray-100 bg-white; } 
   .section { @apply py-12 md:py-16; }
 }

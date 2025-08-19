@@ -42,118 +42,38 @@ export default function QualitySection() {
         </div>
 
         <section className="mt-12">
-          <h2
-            className="
-              text-slate-900
-              text-4xl md:text-5xl
-              font-semibold tracking-[-0.01em]
-              mb-6 md:mb-8
-            "
-          >
+          <h2 className="container-max text-slate-900 text-[44px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.01em] mb-6">
             Преимущества
           </h2>
           
-          <div className="relative py-8 md:py-10">
-            <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
-            <div className="absolute inset-x-0 bottom-0 h-px bg-slate-200" />
+          <div className="py-10">
+            <div className="container-max flex justify-start md:justify-center items-center -space-x-4 md:-space-x-6">
           
-            <div
-              className="
-                flex items-center justify-start md:justify-center
-                -space-x-8 md:-space-x-10 lg:-space-x-16
-              "
-            >
-              <div
-                className="
-                  w-[220px] h-[220px]
-                  md:w-[240px] md:h-[240px]
-                  lg:w-[260px] lg:h-[260px]
-                  rounded-full bg-white
-                  border-[1.25px] md:border-[1.25px] lg:border-[1.5px]
-                  border-slate-300
-                  flex flex-col items-center justify-center text-center
-                  select-none
-                "
-              >
-                <span className="text-orange-500 font-medium mb-2 text-xl">1</span>
-                <p className="text-orange-500 text-[14px] leading-[1.25]">
-                  Широкий ассортимент
-                </p>
+              <div className="size-[260px] rounded-full bg-[var(--app-bg)] border border-[#D9E2EC] flex flex-col items-center justify-center text-center select-none">
+                <span className="text-orange-500 font-semibold mb-2">1</span>
+                <p className="text-orange-500 text-[14px] leading-[1.25]">Широкий ассортимент</p>
               </div>
           
-              <div
-                className="
-                  w-[220px] h-[220px]
-                  md:w-[240px] md:h-[240px]
-                  lg:w-[260px] lg:h-[260px]
-                  rounded-full bg-white
-                  border-[1.25px] md:border-[1.25px] lg:border-[1.5px]
-                  border-slate-300
-                  flex flex-col items-center justify-center text-center
-                  select-none
-                "
-              >
-                <span className="text-orange-500 font-medium mb-2 text-xl">2</span>
-                <p className="text-orange-500 text-[14px] leading-[1.25]">
-                  Проверенные бренды
-                </p>
+              <div className="size-[260px] rounded-full bg-[var(--app-bg)] border border-[#D9E2EC] flex flex-col items-center justify-center text-center select-none">
+                <span className="text-orange-500 font-semibold mb-2">2</span>
+                <p className="text-orange-500 text-[14px] leading-[1.25]">Проверенные бренды</p>
               </div>
           
-              <div
-                className="
-                  relative
-                  w-[220px] h-[220px]
-                  md:w-[240px] md:h-[240px]
-                  lg:w-[260px] lg:h-[260px]
-                  rounded-full bg-white
-                  border-[1.25px] md:border-[1.25px] lg:border-[1.5px]
-                  border-slate-300
-                  select-none z-10
-                "
-              >
-                <span
-                  className="
-                    absolute left-1/2 -translate-x-1/2
-                    top-[34%]
-                    text-orange-500 font-bold
-                    text-3xl md:text-4xl leading-none
-                  "
-                >
-                  4,5
-                </span>
-                <p
-                  className="
-                    absolute left-1/2 -translate-x-1/2
-                    top-[58%]
-                    text-slate-900 font-semibold
-                    text-[14px] leading-[1.25]
-                    whitespace-nowrap
-                  "
-                >
-                  Рейтинг Яндекс
-                </p>
+              <div className="size-[260px] rounded-full bg-[var(--app-bg)] border border-[#D9E2EC] flex flex-col items-center justify-center text-center select-none">
+                <span className="text-orange-500 font-semibold text-4xl leading-none mb-1">4,5</span>
+                <p className="text-slate-900 font-semibold text-[14px] leading-[1.25]">Рейтинг Яндекс</p>
               </div>
           
-              <div
-                className="
-                  w-[220px] h-[220px]
-                  md:w-[240px] md:h-[240px]
-                  lg:w-[260px] lg:h-[260px]
-                  rounded-full bg-white
-                  border-[1.25px] md:border-[1.25px] lg:border-[1.5px]
-                  border-slate-300
-                  flex flex-col items-center justify-center text-center
-                  select-none
-                "
-              >
-                <span className="text-orange-500 font-medium mb-2 text-xl">3</span>
-                <p className="text-orange-500 text-[14px] leading-[1.25]">
-                  Опытные специалисты
-                </p>
+              {/* 3 */}
+              <div className="size-[260px] rounded-full bg-[var(--app-bg)] border border-[#D9E2EC] flex flex-col items-center justify-center text-center select-none">
+                <span className="text-orange-500 font-semibold mb-2">3</span>
+                <p className="text-orange-500 text-[14px] leading-[1.25]">Опытные специалисты</p>
               </div>
+          
             </div>
           </div>
         </section>
+
       </div>
     </section>
   );
