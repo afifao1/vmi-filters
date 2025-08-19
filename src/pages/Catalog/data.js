@@ -81,4 +81,5 @@ export const PRODUCTS = [
   },
 ];
 
-export const POWER_OPTIONS = [120, 220, 280, 500, 600];
+export const CAPACITY_OPTIONS = [100000, 250000, 800000, 1000000];
+export const VOLTAGE_OPTIONS  = [120, 220, 280, 500, 600];

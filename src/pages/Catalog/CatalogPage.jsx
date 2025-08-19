@@ -2,19 +2,29 @@ import ProductCard from "./components/ProductCard";
 import FiltersSidebar from "./components/FiltersSidebar";
 import SearchHeader from "./components/SearchHeader";
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
-import { PRODUCTS, POWER_OPTIONS } from "./data";
+
+import {
+  PRODUCTS,
+  CAPACITY_OPTIONS,  
+  VOLTAGE_OPTIONS,   
+} from "./data";
 
 export default function CatalogPage() {
   const {
     q, setQ,
+    sort, setSort,
+
     statusIn, setStatusIn,
     statusPre, setStatusPre,
+
     typeFuel, setTypeFuel,
     typeOil, setTypeOil,
     typeAir, setTypeAir,
     typePump, setTypePump,
-    powers, togglePower,
-    sort, setSort,
+
+    capacities, toggleCapacity,   
+    voltages, toggleVoltage,     
+
     filtered,
     resetAll,
   } = useCatalogFilters(PRODUCTS);
@@ -28,27 +38,32 @@ export default function CatalogPage() {
           <FiltersSidebar
             statusIn={statusIn} setStatusIn={setStatusIn}
             statusPre={statusPre} setStatusPre={setStatusPre}
+
             typeFuel={typeFuel} setTypeFuel={setTypeFuel}
             typeOil={typeOil} setTypeOil={setTypeOil}
             typeAir={typeAir} setTypeAir={setTypeAir}
             typePump={typePump} setTypePump={setTypePump}
-            powers={powers} togglePower={togglePower}
+
             sort={sort} setSort={setSort}
+
+            capacities={capacities}
+            toggleCapacity={toggleCapacity}
+            CAPACITY_OPTIONS={CAPACITY_OPTIONS}
+
+            voltages={voltages}
+            toggleVoltage={toggleVoltage}
+            VOLTAGE_OPTIONS={VOLTAGE_OPTIONS}
+
             resetAll={resetAll}
-            POWER_OPTIONS={POWER_OPTIONS}
           />
 
           <section>
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <svg className="mb-3 h-10 w-10 text-slate-300" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z"
+                        stroke="currentColor" strokeWidth="2"
+                        strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <div className="text-slate-600">
                   По вашему запросу ничего не найдено. Попробуйте еще раз.
@@ -65,15 +80,14 @@ export default function CatalogPage() {
               <div
                 className="
                   grid sm:grid-cols-2 xl:grid-cols-3
-                  gap-x-[150px]   /* горизонтальный отступ 100px */
-                  gap-y-[10px]   /* вертикальный отступ 100px */
+                  gap-x-[180px]   /* горизонтальный отступ между карточками */
+                  gap-y-[100px]   /* вертикальный отступ между карточками */
                 "
               >
                 {filtered.map((p) => (
                   <ProductCard key={p.id} p={p} />
                 ))}
               </div>
-
             )}
           </section>
         </div>

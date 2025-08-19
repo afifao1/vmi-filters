@@ -1,8 +1,5 @@
 import { useMemo, useState } from "react";
 
-/**
- * Хук, который хранит состояние фильтров/сортировки и выдаёт отфильтрованный список.
- */
 export function useCatalogFilters(products) {
   const [q, setQ] = useState("");
   const [statusIn, setStatusIn] = useState(false);
@@ -14,10 +11,19 @@ export function useCatalogFilters(products) {
   const [typePump, setTypePump] = useState(false);
 
   const [powers, setPowers] = useState([]);
-  const [sort, setSort] = useState("popular"); // az | za | popular
-
   const togglePower = (v) =>
     setPowers((arr) => (arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]));
+
+  const [capacities, setCapacities] = useState([]); 
+  const [voltages, setVoltages] = useState([]);   
+
+  const toggleCapacity = (val) =>
+    setCapacities((prev) => (prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]));
+
+  const toggleVoltage = (val) =>
+    setVoltages((prev) => (prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]));
+
+  const [sort, setSort] = useState("popular"); // az | za | popular
 
   const resetAll = () => {
     setQ("");
@@ -27,7 +33,9 @@ export function useCatalogFilters(products) {
     setTypeOil(false);
     setTypeAir(false);
     setTypePump(false);
-    setPowers([]);
+    setPowers([]);      
+    setCapacities([]);  
+    setVoltages([]);    
     setSort("popular");
   };
 
@@ -61,8 +69,16 @@ export function useCatalogFilters(products) {
       list = list.filter((p) => activeTypes.includes(p.type));
     }
 
+    if (capacities.length) {
+      list = list.filter((p) => capacities.includes(p.capacity));
+    }
+
     if (powers.length) {
       list = list.filter((p) => powers.includes(p.power));
+    }
+
+    if (voltages.length) {
+      list = list.filter((p) => voltages.includes(p.voltage));
     }
 
     if (sort === "az") list.sort((a, b) => a.title.localeCompare(b.title));
@@ -70,10 +86,22 @@ export function useCatalogFilters(products) {
     else list.sort((a, b) => b.popularity - a.popularity);
 
     return list;
-  }, [products, q, statusIn, statusPre, typeFuel, typeOil, typeAir, typePump, powers, sort]);
+  }, [
+    products,
+    q,
+    statusIn,
+    statusPre,
+    typeFuel,
+    typeOil,
+    typeAir,
+    typePump,
+    capacities,   
+    voltages,    
+    powers,      
+    sort,
+  ]);
 
   return {
-    // состояние
     q, setQ,
     statusIn, setStatusIn,
     statusPre, setStatusPre,
@@ -81,9 +109,14 @@ export function useCatalogFilters(products) {
     typeOil, setTypeOil,
     typeAir, setTypeAir,
     typePump, setTypePump,
+
     powers, togglePower,
+
+    capacities, toggleCapacity,
+    voltages, toggleVoltage,
+
     sort, setSort,
-    // данные/методы
+
     filtered,
     resetAll,
   };

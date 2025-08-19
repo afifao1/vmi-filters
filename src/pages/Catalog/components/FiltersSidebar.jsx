@@ -1,108 +1,181 @@
 import { useState } from "react";
 
-function Section({ title, children, defaultOpen = true }) {
-  const [open, setOpen] = useState(defaultOpen);
+const Row = ({ children }) => (
+  <label className="flex items-center gap-3 py-2 text-[16px] text-slate-700">
+    {children}
+  </label>
+);
+
+const Box = (props) => (
+  <input
+    type="checkbox"
+    className="h-4 w-4 rounded border-slate-300 text-orange-500 focus:ring-orange-400"
+    {...props}
+  />
+);
+
+function Section({ title, open, onToggle, children }) {
   return (
-    <div className="border-b border-slate-200 pb-3 mb-3">
+    <div>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between text-[15px] font-medium text-slate-700"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between text-slate-900
+                   text-[22px] md:text-[24px] leading-[1.2] font-medium"
       >
-        {title}
-        <svg className={`w-4 h-4 transition ${open ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none">
-          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <span>{title}</span>
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`h-4 w-4 text-slate-800 transition-transform ${
+            open ? "" : "rotate-180"
+          }`}
+        >
+          <path
+            d="M6 15l6-6 6 6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
-      {open && <div className="mt-3 space-y-2">{children}</div>}
+
+      <div className={`overflow-hidden transition-[max-height] duration-200 ${open ? "mt-3" : ""}`}>
+        {open && <div className="space-y-1">{children}</div>}
+      </div>
+
+      <div className="my-6 h-px bg-slate-200" />
     </div>
   );
 }
 
-function Check({ label, checked, onChange }) {
-  return (
-    <label className="flex items-center gap-2 cursor-pointer select-none">
-      <input
-        type="checkbox"
-        className="h-4 w-4 rounded border-slate-300 text-orange-500 focus:ring-orange-500"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-      />
-      <span className="text-sm text-slate-700">{label}</span>
-    </label>
-  );
-}
+const fmtRU = (n) =>
+  typeof n === "number" ? n.toLocaleString("ru-RU") : String(n);
 
-export default function FiltersSidebar(props) {
-  const {
-    statusIn, setStatusIn,
-    statusPre, setStatusPre,
-    typeFuel, setTypeFuel,
-    typeOil, setTypeOil,
-    typeAir, setTypeAir,
-    typePump, setTypePump,
-    powers, togglePower,
-    sort, setSort,
-    resetAll,
-    POWER_OPTIONS,
-  } = props;
+export default function FiltersSidebar({
+  statusIn, setStatusIn,
+  statusPre, setStatusPre,
+  sort, setSort,
+
+  typeFuel, setTypeFuel,
+  typeOil, setTypeOil,
+  typeAir, setTypeAir,
+  typePump, setTypePump,
+
+  capacities, toggleCapacity, CAPACITY_OPTIONS,
+
+  voltages, toggleVoltage, VOLTAGE_OPTIONS,
+
+  resetAll,
+}) {
+  const [open, setOpen] = useState({
+    sort: true,
+    type: true,
+    capacity: true,
+    voltage: true,
+  });
 
   return (
-    <aside className="rounded-xl border border-slate-200 bg-white p-4 h-fit">
-      {/* Сортировка */}
-      <Section title="Сортировка" defaultOpen>
-        <div className="space-y-2">
-          <Check label="В наличии" checked={statusIn} onChange={setStatusIn} />
-          <Check label="На заказ" checked={statusPre} onChange={setStatusPre} />
-          <div className="pt-1.5 border-t border-slate-200" />
-          <Check label="А - Я" checked={sort === "az"} onChange={(v) => v && setSort("az")} />
-          <Check label="Я - А" checked={sort === "za"} onChange={(v) => v && setSort("za")} />
-          <Check label="По популярности" checked={sort === "popular"} onChange={(v) => v && setSort("popular")} />
-        </div>
+    <aside className="space-y-0">
+      <Section
+        title="Сортировка"
+        open={open.sort}
+        onToggle={() => setOpen((s) => ({ ...s, sort: !s.sort }))}
+      >
+        <Row>
+          <Box checked={statusIn} onChange={(e) => setStatusIn(e.target.checked)} />
+          <span>В наличии</span>
+        </Row>
+        <Row>
+          <Box checked={statusPre} onChange={(e) => setStatusPre(e.target.checked)} />
+          <span>На заказ</span>
+        </Row>
+        <Row>
+          <Box checked={sort === "az"} onChange={() => setSort(sort === "az" ? "" : "az")} />
+          <span>А - Я</span>
+        </Row>
+        <Row>
+          <Box checked={sort === "za"} onChange={() => setSort(sort === "za" ? "" : "za")} />
+          <span>Я - А</span>
+        </Row>
+        <Row>
+          <Box
+            checked={sort === "popular"}
+            onChange={() => setSort(sort === "popular" ? "" : "popular")}
+          />
+          <span>По популярности</span>
+        </Row>
       </Section>
 
-      {/* Тип фильтра */}
-      <Section title="Тип фильтра" defaultOpen>
-        <Check label="Топливные фильтры" checked={typeFuel} onChange={setTypeFuel} />
-        <Check label="Масляные фильтры" checked={typeOil} onChange={setTypeOil} />
-        <Check label="Воздушные фильтры" checked={typeAir} onChange={setTypeAir} />
-        <Check label="Насосы" checked={typePump} onChange={setTypePump} />
+      <Section
+        title="Тип фильтра"
+        open={open.type}
+        onToggle={() => setOpen((s) => ({ ...s, type: !s.type }))}
+      >
+        <Row>
+          <Box checked={typeFuel} onChange={(e) => setTypeFuel(e.target.checked)} />
+          <span>Топливные фильтры</span>
+        </Row>
+        <Row>
+          <Box checked={typeOil} onChange={(e) => setTypeOil(e.target.checked)} />
+          <span>Масляные фильтры</span>
+        </Row>
+        <Row>
+          <Box checked={typeAir} onChange={(e) => setTypeAir(e.target.checked)} />
+          <span>Воздушные фильтры</span>
+        </Row>
+        <Row>
+          <Box checked={typePump} onChange={(e) => setTypePump(e.target.checked)} />
+          <span>Насосы</span>
+        </Row>
       </Section>
 
-      {/* Напряжение */}
-      <Section title="Напряжение" defaultOpen>
-        <div className="flex flex-wrap gap-2">
-          {POWER_OPTIONS.map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => togglePower(p)}
-              className={[
-                "h-8 px-3 rounded-md border text-sm",
-                powers.includes(p)
-                  ? "border-orange-500 text-orange-600 bg-orange-50"
-                  : "border-slate-300 text-slate-600 hover:bg-slate-50",
-              ].join(" ")}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
+      <Section
+        title="Мощность"
+        open={open.capacity}
+        onToggle={() => setOpen((s) => ({ ...s, capacity: !s.capacity }))}
+      >
+        {CAPACITY_OPTIONS.map((n) => {
+          const active = capacities.includes(n);
+          return (
+            <Row key={n}>
+              <Box checked={active} onChange={() => toggleCapacity(n)} />
+              <span>{fmtRU(n)}</span>
+            </Row>
+          );
+        })}
       </Section>
 
-      {/* Сброс / Применить */}
-      <div className="flex items-center justify-between pt-1">
+      <Section
+        title="Напряжение"
+        open={open.voltage}
+        onToggle={() => setOpen((s) => ({ ...s, voltage: !s.voltage }))}
+      >
+        {VOLTAGE_OPTIONS.map((v) => {
+          const active = voltages.includes(v);
+          return (
+            <Row key={v}>
+              <Box checked={active} onChange={() => toggleVoltage(v)} />
+              <span>{fmtRU(v)}</span>
+            </Row>
+          );
+        })}
+      </Section>
+
+      <div className="flex items-center justify-between text-[15px]">
         <button
           type="button"
-          className="text-slate-500 text-sm hover:text-slate-700"
           onClick={resetAll}
+          className="text-slate-500 hover:text-slate-700"
         >
           Сбросить
         </button>
         <button
           type="button"
-          className="text-orange-600 text-sm hover:text-orange-700"
-          title="Фильтры уже применяются автоматически"
+          className="text-orange-600 hover:text-orange-700"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           Применить
         </button>
