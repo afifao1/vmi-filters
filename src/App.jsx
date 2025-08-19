@@ -4,7 +4,8 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
-import Catalog from "./pages/Catalog.jsx";             
+// import Catalog from "./pages/Catalog.jsx"; // лишний импорт — удалить
+import CatalogPage from "./pages/Catalog/CatalogPage.jsx";
 import FooterAbout from "./components/Footer/FooterAbout.jsx";
 import ContactModal from "./components/Modal/ContactModal.jsx";
 
@@ -29,7 +30,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/catalog" element={<Catalog />} />  
+        <Route path="/catalog" element={<CatalogPage />} />
+        {/* fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
 
