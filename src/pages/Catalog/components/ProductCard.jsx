@@ -3,7 +3,7 @@ import StatusPill from "./StatusPill";
 export default function ProductCard({ p }) {
   return (
     <div className="flex flex-col items-center text-center">
-      {/* картинка — как было */}
+      {/* изображение */}
       <div className="h-[180px] md:h-[200px] grid place-items-center mb-4">
         <img
           src={p.img}
@@ -13,29 +13,28 @@ export default function ProductCard({ p }) {
         />
       </div>
 
-      {/* НАЗВАНИЕ — только шрифт/размер/межстрочный */}
-      <div className="text-slate-900 text-[20px] md:text-[22px] leading-[1.25] tracking-[-0.01em] font-medium max-w-[360px]">
+      {/* название */}
+      <div className="text-[15px] md:text-[16px] font-medium text-slate-900 leading-snug max-w-[320px]">
         {p.title}
       </div>
 
-      {/* ПРОИЗВОДИТЕЛЬ — только шрифты */}
-      <div className="mt-2 text-[14px] leading-5 text-slate-500">
-        Производитель:{" "}
-        <span className="text-slate-900 font-semibold uppercase tracking-wide">
-          {p.manufacturer}
-        </span>
+      {/* производитель */}
+      <div className="mt-1 text-[13px] text-slate-500">
+        Производитель: <span className="font-medium">{p.manufacturer}</span>
       </div>
 
-      {/* Статус — без изменений */}
+      {/* статус */}
       <div className="mt-3">
         <StatusPill status={p.status} />
       </div>
 
-      {/* Кнопка — только размер шрифта (по желанию можно вернуть 14px) */}
+      {/* кнопка открытия формы: передаём товар через data-* */}
       <button
         type="button"
         data-open-contact
-        className="mt-4 h-10 rounded-md px-6 bg-orange-500 text-white text-[16px] font-medium hover:bg-orange-600 transition"
+        data-p-title={p.title}
+        data-p-img={p.img}
+        className="mt-4 h-10 rounded-md px-6 bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
       >
         Оставить заявку
       </button>
