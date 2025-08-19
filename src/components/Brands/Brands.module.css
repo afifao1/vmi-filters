@@ -1,8 +1,0 @@
-.section{ background:#fff; padding-block:56px; border-top:0; border-bottom:0;}
-.title{ color:var(--text); font-weight:600; font-size:28px; line-height:36px; margin-bottom:16px; }
-.row{ display:flex; gap:16px; overflow-x:auto; padding-bottom:6px; }
-.card{ width:204px; height:102px; background:#fff; border:1px solid var(--line); border-radius:12px;
-       display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
-.logo{ width:204px; height:102px; object-fit:contain; display:block; }
-@media (min-width:1200px){ .row{ overflow:visible; } }
-.section { padding-bottom: 64px; }

@@ -1,4 +1,0 @@
-.backdrop { @apply fixed inset-0 bg-black/50 z-50 flex items-center justify-center; }
-.panel { @apply bg-white rounded-2xl p-6 w-full max-w-md shadow-lg; }
-.title { @apply text-xl font-semibold mb-4; }
-.actions { @apply flex justify-end gap-3 mt-6; }
