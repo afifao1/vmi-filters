@@ -1,10 +1,14 @@
-export default function SearchHeader({ q, setQ, count }) {
+export default function SearchHeader({ q, setQ }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-4 items-center">
-      <div className="relative">
+    <div className="mb-6 flex items-center justify-between gap-4">
+      <h1 className="text-slate-900 leading-none font-light text-[44px] md:text-[52px]">
+        Каталог
+      </h1>
+
+      <div className="relative w-[280px] md:w-[360px]">
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
           viewBox="0 0 24 24"
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
           fill="none"
         >
           <path
@@ -15,17 +19,14 @@ export default function SearchHeader({ q, setQ, count }) {
             strokeLinejoin="round"
           />
         </svg>
+
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Поиск"
-          className="w-full h-10 pl-9 pr-3 rounded-md border border-slate-300
-                     focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none bg-white"
+          className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-3 outline-none
+                     focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
         />
-      </div>
-
-      <div className="text-slate-500 text-sm md:text-base">
-        {count} позиций
       </div>
     </div>
   );

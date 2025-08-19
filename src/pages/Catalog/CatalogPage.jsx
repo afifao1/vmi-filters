@@ -6,7 +6,6 @@ import { PRODUCTS, POWER_OPTIONS } from "./data";
 
 export default function CatalogPage() {
   const {
-    // состояние из хука
     q, setQ,
     statusIn, setStatusIn,
     statusPre, setStatusPre,
@@ -21,14 +20,11 @@ export default function CatalogPage() {
   } = useCatalogFilters(PRODUCTS);
 
   return (
-    <main className="pt-28 bg-[var(--page-bg)]">
-      <div className="container-max px-4 md:px-6 lg:px-8 py-8">
-        <h1 className="text-[36px] md:text-[44px] font-semibold text-slate-900 mb-6">
-          Каталог
-        </h1>
+    <main className="bg-[var(--page-bg)] pt-20 md:pt-24">
+      <div className="container-max px-4 md:px-6 lg:px-8">
+        <SearchHeader q={q} setQ={setQ} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[260px,1fr] gap-8">
-          {/* Фильтры слева */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px,1fr]">
           <FiltersSidebar
             statusIn={statusIn} setStatusIn={setStatusIn}
             statusPre={statusPre} setStatusPre={setStatusPre}
@@ -42,13 +38,10 @@ export default function CatalogPage() {
             POWER_OPTIONS={POWER_OPTIONS}
           />
 
-          {/* Правая часть */}
-          <section className="space-y-6">
-            <SearchHeader q={q} setQ={setQ} count={filtered.length} />
-
+          <section>
             {filtered.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <svg className="w-10 h-10 text-slate-300 mb-3" viewBox="0 0 24 24" fill="none">
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <svg className="mb-3 h-10 w-10 text-slate-300" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z"
                     stroke="currentColor"
@@ -69,7 +62,7 @@ export default function CatalogPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {filtered.map((p) => (
                   <ProductCard key={p.id} p={p} />
                 ))}
