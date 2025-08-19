@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
   const ddRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -15,6 +15,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // закрываем дропдаун по клику вне
   useEffect(() => {
     const onDocClick = (e) => {
       if (!ddRef.current) return;
@@ -23,11 +24,6 @@ export default function Header() {
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, []);
-
-  const goType = (type) => {
-    setCatOpen(false);
-    navigate(`/catalog?type=${type}`);
-  };
 
   const navLink =
     "inline-flex items-center rounded-lg px-4 py-3 text-[18px] md:text-[20px] " +
@@ -39,7 +35,7 @@ export default function Header() {
         "fixed inset-x-0 top-0 z-50 transition-shadow",
         scrolled && "shadow-md"
       )}
-      style={{ backgroundColor: "var(--page-bg)" }} 
+      style={{ backgroundColor: "var(--page-bg)" }}
     >
       <div
         className={cx(
@@ -48,7 +44,8 @@ export default function Header() {
           "py-3"
         )}
       >
-        <Link to="/" className="block">
+        {/* Лого */}
+        <Link to="/" className="block" onClick={() => setCatOpen(false)}>
           <img
             src="/logo.svg"
             alt="VMI"
@@ -58,9 +55,13 @@ export default function Header() {
           />
         </Link>
 
+        {/* Нав */}
         <nav className="flex items-center gap-8">
-          <Link to="/" className={navLink}>Главная</Link>
+          <Link to="/" className={navLink} onClick={() => setCatOpen(false)}>
+            Главная
+          </Link>
 
+          {/* Каталог с выпадающим меню */}
           <div className="relative" ref={ddRef}>
             <button
               type="button"
@@ -85,22 +86,26 @@ export default function Header() {
                   ["Воздушные фильтры", "air"],
                   ["Насосы", "pump"],
                 ].map(([label, type]) => (
-                  <button
+                  <Link
                     key={type}
+                    to={`/catalog?type=${type}`}
                     role="menuitem"
-                    onClick={() => goType(type)}
+                    onClick={() => setCatOpen(false)}
                     className="block w-full px-4 py-3 text-left text-[15px] hover:bg-slate-50"
                   >
                     {label}
-                  </button>
+                  </Link>
                 ))}
               </div>
             )}
           </div>
 
-          <Link to="/about" className={navLink}>О компании</Link>
+          <Link to="/about" className={navLink} onClick={() => setCatOpen(false)}>
+            О компании
+          </Link>
         </nav>
 
+        {/* CTA */}
         <button
           type="button"
           data-open-contact
