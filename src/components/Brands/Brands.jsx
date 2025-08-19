@@ -9,7 +9,7 @@ const brands = [
 
 export default function Brands() {
   return (
-    <section className="bg-slate-50 py-14 md:py-16">
+    <section className="py-14 md:py-16">
       <div className="container-max px-4 md:px-6 lg:px-8">
         <h3 className="text-slate-900 text-[34px] md:text-[44px] leading-[1.15] font-light tracking-[-0.01em] mb-8 md:mb-10">
           Сотрудничаем с проверенными брендами

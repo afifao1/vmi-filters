@@ -38,10 +38,9 @@ export default function Header() {
     <header
       className={cx(
         "fixed inset-x-0 top-0 z-50 transition-shadow",
-        scrolled
-          ? "bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-md"
-          : "bg-white"
+        scrolled && "shadow-md"
       )}
+      style={{ backgroundColor: "var(--page-bg)" }} 
     >
       <div
         className={cx(
@@ -50,7 +49,6 @@ export default function Header() {
           "py-3"
         )}
       >
-        {/* Лого */}
         <Link to="/" className="block">
           <img
             src="/logo.svg"
@@ -62,9 +60,7 @@ export default function Header() {
         </Link>
 
         <nav className="flex items-center gap-8">
-          <Link to="/" className={navLink}>
-            Главная
-          </Link>
+          <Link to="/" className={navLink}>Главная</Link>
 
           <div className="relative" ref={ddRef}>
             <button
@@ -74,18 +70,8 @@ export default function Header() {
               className={cx(navLink, "gap-1")}
             >
               Каталог
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className={cx("h-4 w-4 transition", catOpen && "rotate-180")}
-              >
-                <path
-                  d="M6 9l6 6 6-6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg viewBox="0 0 24 24" fill="none" className={cx("h-4 w-4 transition", catOpen && "rotate-180")}>
+                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
 
@@ -113,9 +99,7 @@ export default function Header() {
             )}
           </div>
 
-          <Link to="/about" className={navLink}>
-            О компании
-          </Link>
+          <Link to="/about" className={navLink}>О компании</Link>
         </nav>
 
         <button

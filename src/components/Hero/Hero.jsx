@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="bg-white pt-28 md:pt-32 pb-20">
+    <section className="pt-28 md:pt-32 pb-20">
       <div className="container-max grid items-end gap-10
                       xl:grid-cols-[1fr_680px]">
 

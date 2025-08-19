@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ContactCta() {
   return (
-    <section id="contact" className="bg-white border-t border-slate-200">
+    <section id="contact" className="border-t border-slate-200">
       <div className="container-max">
         <div className="grid items-center gap-8 py-14 lg:py-16 grid-cols-1 lg:grid-cols-[minmax(720px,1fr),480px]">
           <div className="space-y-4">

@@ -16,7 +16,7 @@ export default function CategoriesAccordion() {
   };
 
   return (
-    <section id="catalog" className="bg-white py-14">
+    <section id="catalog" className="py-14">
       <div className="container-max">
         <p className="text-center text-slate-900 font-normal md:font-light
                        text-[32px] leading-10 md:text-[36px] md:leading-[44px] tracking-[-0.01em]">

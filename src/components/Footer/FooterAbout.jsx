@@ -12,7 +12,10 @@ export default function FooterAbout() {
   ];
 
   return (
-    <footer className="bg-white border-t border-slate-200">
+    <footer
+      className="border-t border-slate-200"
+      style={{ backgroundColor: "var(--page-bg)" }} 
+    >
       <div className="container-max py-8">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
@@ -44,10 +47,7 @@ export default function FooterAbout() {
               </a>
             </div>
             <div>
-              <a
-                href="mailto:info@vmi-filtr.ru"
-                className="text-orange-500 hover:text-orange-600"
-              >
+              <a href="mailto:info@vmi-filtr.ru" className="text-orange-500 hover:text-orange-600">
                 info@vmi-filtr.ru
               </a>
             </div>

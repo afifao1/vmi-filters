@@ -3,7 +3,7 @@ export default function QualitySection() {
     <section
       id="quality"
       className="
-        bg-white text-slate-900
+        text-slate-900
         pt-[72px] pb-[120px]
         lg:pt-[120px] lg:pb-[180px]
       "
