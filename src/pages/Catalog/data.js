@@ -3,10 +3,10 @@ export const PRODUCTS = [
     id: 1,
     title: "Портативный Очиститель Масла Серии BLYJ",
     manufacturer: "KNELSON",
-    status: "in_stock",       // "in_stock" | "preorder"
-    type: "fuel",             // "fuel" | "oil" | "air" | "pump"
+    status: "in_stock",       
+    type: "fuel",           
     power: 220,
-    img: "/images/filters.png",
+    img: "/images/filters1.svg",
     popularity: 5,
   },
   {
@@ -16,7 +16,7 @@ export const PRODUCTS = [
     status: "preorder",
     type: "oil",
     power: 280,
-    img: "/images/filters.png",
+    img: "/images/filters2.svg",
     popularity: 3,
   },
   {
@@ -26,7 +26,7 @@ export const PRODUCTS = [
     status: "in_stock",
     type: "air",
     power: 120,
-    img: "/images/filters.png",
+    img: "/images/filters3.svg",
     popularity: 9,
   },
   {
@@ -36,7 +36,7 @@ export const PRODUCTS = [
     status: "in_stock",
     type: "pump",
     power: 500,
-    img: "/images/filters.png",
+    img: "/images/filters4.svg",
     popularity: 1,
   },
   {
@@ -46,7 +46,7 @@ export const PRODUCTS = [
     status: "preorder",
     type: "fuel",
     power: 600,
-    img: "/images/filters.png",
+    img: "/images/filters5.svg",
     popularity: 7,
   },
   {
@@ -56,7 +56,7 @@ export const PRODUCTS = [
     status: "in_stock",
     type: "oil",
     power: 220,
-    img: "/images/filters.png",
+    img: "/images/filters6.svg",
     popularity: 4,
   },
   {
@@ -66,7 +66,7 @@ export const PRODUCTS = [
     status: "in_stock",
     type: "air",
     power: 280,
-    img: "/images/filters.png",
+    img: "/images/filters7.svg",
     popularity: 2,
   },
   {
@@ -76,7 +76,7 @@ export const PRODUCTS = [
     status: "preorder",
     type: "pump",
     power: 120,
-    img: "/images/filters.png",
+    img: "/images/filters8.svg",
     popularity: 8,
   },
 ];

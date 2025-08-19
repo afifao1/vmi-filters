@@ -62,11 +62,18 @@ export default function CatalogPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div
+                className="
+                  grid sm:grid-cols-2 xl:grid-cols-3
+                  gap-x-[150px]   /* горизонтальный отступ 100px */
+                  gap-y-[10px]   /* вертикальный отступ 100px */
+                "
+              >
                 {filtered.map((p) => (
                   <ProductCard key={p.id} p={p} />
                 ))}
               </div>
+
             )}
           </section>
         </div>
