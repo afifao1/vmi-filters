@@ -1,10 +1,10 @@
 import StatusPill from "./StatusPill";
 
-export default function ProductCard({ p }) {
+export default function ProductCard({ p, onOrder }) {
   return (
-    <div className="flex flex-col items-center text-center">
-      {/* изображение */}
-      <div className="h-[180px] md:h-[200px] grid place-items-center mb-4">
+    <div className="h-full flex flex-col items-center text-center">
+      {/* фиксированная зона под картинку */}
+      <div className="h-[180px] w-full grid place-items-center mb-4">
         <img
           src={p.img}
           alt=""
@@ -13,28 +13,32 @@ export default function ProductCard({ p }) {
         />
       </div>
 
-      {/* название */}
-      <div className="text-[15px] md:text-[16px] font-medium text-slate-900 leading-snug max-w-[320px]">
-        {p.title}
+      {/* Весь текстовый блок растягиваем, чтобы кнопка ушла вниз */}
+      <div className="px-2 grow flex flex-col items-center">
+        {/* Заголовок: одинаковая высота (2–3 строки) */}
+        <h3
+          className="
+            text-[22px] md:text-[24px] leading-tight font-semibold text-slate-900
+            min-h-[88px] md:min-h-[96px]
+          "
+        >
+          {p.title}
+        </h3>
+
+        <div className="mt-2 text-[14px] text-slate-500">
+          Производитель: <span className="font-medium">{p.manufacturer}</span>
+        </div>
+
+        <div className="mt-3">
+          <StatusPill status={p.status} />
+        </div>
       </div>
 
-      {/* производитель */}
-      <div className="mt-1 text-[13px] text-slate-500">
-        Производитель: <span className="font-medium">{p.manufacturer}</span>
-      </div>
-
-      {/* статус */}
-      <div className="mt-3">
-        <StatusPill status={p.status} />
-      </div>
-
-      {/* кнопка открытия формы: передаём товар через data-* */}
       <button
         type="button"
         data-open-contact
-        data-p-title={p.title}
-        data-p-img={p.img}
-        className="mt-4 h-10 rounded-md px-6 bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
+        onClick={() => onOrder?.(p)}
+        className="mt-6 h-11 w-[220px] rounded-md bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
       >
         Оставить заявку
       </button>
