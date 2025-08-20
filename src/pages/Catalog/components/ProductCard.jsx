@@ -19,7 +19,7 @@ export default function ProductCard({ p, onOrder }) {
         <h3
           className="
             text-[22px] md:text-[24px] leading-tight font-semibold text-slate-900
-            min-h-[88px] md:min-h-[96px]
+            min_h-[88px] md:min-h-[96px]
           "
         >
           {p.title}
@@ -37,6 +37,9 @@ export default function ProductCard({ p, onOrder }) {
       <button
         type="button"
         data-open-contact
+        data-p-id={p.id}
+        data-p-title={p.title}
+        data-p-img={p.img}
         onClick={() => onOrder?.(p)}
         className="mt-6 h-11 w-[220px] rounded-md bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
       >

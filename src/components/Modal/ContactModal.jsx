@@ -1,292 +1,258 @@
+// FILE: src/components/Modal/ContactModal.jsx
 import { useEffect, useMemo, useState } from "react";
 import Modal from "./Modal";
 
-/* Утилиты -------------------------------------------------- */
-const initialForm = { name: "", phone: "", email: "", message: "", agree: false };
-const initialTouched = { name: false, phone: false, email: false, message: false, agree: false };
+// API base URL из VITE_API_URL или дефолт
+const API_BASE = (import.meta?.env?.VITE_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
 
-function digits(v = "") {
-  return v.replace(/\D+/g, "");
-}
+const initialForm = {
+  type: "contact", // contact|product
+  name: "",
+  phone: "",
+  email: "",
+  message: "",
+  product_id: undefined,
+  product_title: "",
+  quantity: 1,
+  source: "",
+  source_url: "",
+};
 
-// простая маска +7 (XXX) XXX-XX-XX
-function formatPhone(v) {
-  const d = digits(v).replace(/^8/, "7"); // позволяем начинать с 8
-  let out = "+7";
-  if (d.length > 1) {
-    out += " (" + d.slice(1, 4);
-    if (d.length >= 5) out += ") " + d.slice(4, 7);
-    if (d.length >= 8) out += "-" + d.slice(7, 9);
-    if (d.length >= 10) out += "-" + d.slice(9, 11);
-  }
-  return out;
-}
-
-function validate(form) {
-  const e = {};
-
-  // Имя — только буквы, минимум 2 символа
-  if (!form.name.trim()) e.name = "Заполните это поле.";
-  else if (!/^[A-Za-zА-Яа-яЁё\s-]{2,}$/.test(form.name.trim()))
-    e.name = "Введите только буквы (минимум 2 символа)";
-
-  // Телефон — 11 цифр и начинается на 7
-  if (!form.phone.trim()) e.phone = "Заполните это поле.";
-  else {
-    const d = digits(form.phone);
-    if (!(d.length === 11 && d[0] === "7")) e.phone = "Неверный формат телефона";
-  }
-
-  // Email
-  if (!form.email.trim()) e.email = "Заполните это поле.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
-    e.email = "Введите корректный email";
-
-  if (!form.agree) e.agree = "Требуется согласие";
-
-  return e;
-}
-
-/* Компонент ------------------------------------------------ */
-export default function ContactModal({
-  open,
-  onClose,
-  /** необязательно: если передали товар, покажем его с количеством */
-  order,           // { title, img?, qty? }
-  setOrder,        // setState для qty, если используете
-}) {
+export default function ContactModal({ open, onClose, order, setOrder }) {
   const [form, setForm] = useState(initialForm);
-  const [touched, setTouched] = useState(initialTouched);
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [okId, setOkId] = useState(null);
 
-  // очистить форму при каждом закрытии модалки
+  // Префилл при открытии из карточки товара
   useEffect(() => {
-    if (!open) {
-      setForm(initialForm);
-      setTouched(initialTouched);
+    if (open) {
+      setOkId(null);
+      const fromOrder = order && (order.id || order.title);
+      setForm((f) => ({
+        ...initialForm,
+        type: fromOrder ? "product" : "contact",
+        product_id: fromOrder ? (order.id ?? undefined) : undefined,
+        product_title: fromOrder ? (order.title ?? "") : "",
+        quantity: fromOrder ? (order.qty ?? 1) : 1,
+        source: document.body.dataset.page || "", // опционально: откуда открыли
+        source_url: window.location.href,
+      }));
+      setTouched({});
+      setErrors({});
     }
-  }, [open]);
+  }, [open, order]);
 
-  // ESC закрывает модалку
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose?.();
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  const errors = useMemo(() => validate(form), [form]);
-  const isValid =
-    Object.keys(errors).length === 0 &&
-    form.name &&
-    form.phone &&
-    form.email &&
-    form.agree;
-
-  /* хэндлеры */
-  const markTouched = (key) => setTouched((t) => ({ ...t, [key]: true }));
-
-  const handleChange = (key) => (e) => {
-    let value = key === "agree" ? e.target.checked : e.target.value;
-    // маска телефона
-    if (key === "phone") value = formatPhone(value);
-    setForm((s) => ({ ...s, [key]: value }));
-    // считаем поле "потроганным" сразу при первом вводе/фокусе,
-    // чтобы ошибка появлялась немедленно
-    markTouched(key);
+  // Сброс при закрытии
+  const closeAndReset = () => {
+    setForm(initialForm);
+    setTouched({});
+    setErrors({});
+    setOkId(null);
+    setOrder?.(null);
+    onClose?.();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // на всякий случай отметим все поля "потроганными"
+  const setField = (k, v) => {
+    setForm((f) => ({ ...f, [k]: v }));
+  };
+
+  // Простая клиентская валидация (моментально, по touched)
+  const validate = useMemo(() => {
+    const e = {};
+    const nameOk = /^[\p{L}\s\-']{2,}$/u.test(form.name || "");
+    if (!nameOk) e.name = "Минимум 2 символа, только буквы/пробел/дефис/апостроф";
+
+    const phoneOk = /^\+?[1-9]\d{7,14}$/.test(form.phone || "");
+    if (!phoneOk) e.phone = "Формат E.164, напр. +998901234567";
+
+    const emailOk = /\S+@\S+\.\S+/.test(form.email || "");
+    if (!emailOk) e.email = "Неверный email";
+
+    if (form.type === "product") {
+      if (!Number.isInteger(Number(form.product_id))) e.product_id = "Число (ID товара)";
+      if (!(form.product_title || "").trim()) e.product_title = "Название товара";
+      if (Number(form.quantity) < 1) e.quantity = "Минимум 1";
+    }
+    return e;
+  }, [form]);
+
+  useEffect(() => setErrors(validate), [validate]);
+
+  const submit = async (e) => {
+    e?.preventDefault?.();
     setTouched({
       name: true,
       phone: true,
       email: true,
       message: true,
-      agree: true,
+      product_id: true,
+      product_title: true,
+      quantity: true,
     });
-    if (!isValid) return;
 
-    // здесь отправка (API / телеграм / почта). Для примера — console.log:
-    const payload = {
-      ...form,
-      order: order ? { title: order.title, qty: order.qty ?? 1 } : null,
-    };
-    console.log("SEND:", payload);
+    // Если есть ошибки — не отправляем
+    if (Object.keys(validate).length) return;
 
-    // закрываем и чистим
-    onClose?.();
+    setLoading(true);
+    setOkId(null);
+    try {
+      const payload = {
+        type: form.type,
+        name: form.name?.trim(),
+        phone: form.phone?.trim(),
+        email: form.email?.trim(),
+        message: form.message?.trim() || undefined,
+        product_id: form.type === "product" ? Number(form.product_id) : undefined,
+        product_title: form.type === "product" ? form.product_title?.trim() : undefined,
+        quantity: form.type === "product" ? Number(form.quantity || 1) : undefined,
+        source: form.source || undefined,
+        source_url: form.source_url || undefined,
+      };
+
+      const res = await fetch(`${API_BASE}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (res.status === 422 && data?.errors) {
+          const be = {};
+          Object.entries(data.errors).forEach(([k, arr]) => (be[k] = Array.isArray(arr) ? arr[0] : String(arr)));
+          setErrors(be);
+        } else {
+          alert(data?.message || "Ошибка отправки");
+        }
+        return;
+      }
+
+      setOkId(data?.id || null);
+      // Очистка формы после успеха
+      setForm(initialForm);
+      setTouched({});
+      setOrder?.(null);
+    } catch (err) {
+      console.error(err);
+      alert("Сеть недоступна или сервер не отвечает");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // количество (если заказ пришёл из карточки)
-  const qty = order?.qty ?? 1;
-  const dec = () =>
-    setOrder?.((o) => (o ? { ...o, qty: Math.max(1, (o.qty || 1) - 1) } : o));
-  const inc = () =>
-    setOrder?.((o) => (o ? { ...o, qty: (o.qty || 1) + 1 } : o));
-
-  const inputCls = (err, extra = "") =>
-    `mt-1 w-full h-11 rounded-md border px-3 outline-none transition
-     ${err ? "border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-           : "border-slate-300 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"} ${extra}`;
-
-  const textareaCls = (err) =>
-    `mt-1 w-full min-h-[90px] rounded-md border px-3 py-2 outline-none transition
-     ${err ? "border-red-400 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-           : "border-slate-300 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"}`;
+  const fieldError = (k) => (touched[k] && errors[k] ? errors[k] : "");
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title="Оставить заявку"
-      widthClass="w-[760px] max-w-[95vw]"
-    >
-      <p className="text-slate-600 mb-5">
-        Менеджер перезвонит вам в ближайшее время
-      </p>
+    <Modal open={open} onClose={closeAndReset} title="Связаться с менеджером">
+      <form onSubmit={submit} className="space-y-4">
+        {/* Тип заявки (readonly, но показываем) */}
+        <div className="text-sm text-slate-500">Тип: <span className="font-medium">{form.type}</span></div>
 
-      {/* Блок товара с количеством (если заказ пришёл из каталога) */}
-      {order?.title && (
-        <div className="mb-6 flex items-center justify-between rounded-md border border-orange-100 bg-orange-50 px-4 py-3">
-          <div className="flex items-center gap-4">
-            {order.img && (
-              <img src={order.img} alt="" className="h-12 w-12 object-contain" />
-            )}
-            <div className="text-[15px] md:text-[16px] font-semibold text-slate-900 leading-snug">
-              {order.title}
+        {form.type === "product" && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label className="block text-sm mb-1">ID товара</label>
+              <input
+                type="number"
+                className={`input ${fieldError("product_id") ? "input-error" : ""}`}
+                value={form.product_id ?? ""}
+                onChange={(e) => setField("product_id", e.target.value)}
+                onBlur={() => setTouched((t) => ({ ...t, product_id: true }))}
+              />
+              {fieldError("product_id") && <p className="text-red-500 text-xs mt-1">{fieldError("product_id")}</p>}
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm mb-1">Название товара</label>
+              <input
+                type="text"
+                className={`input ${fieldError("product_title") ? "input-error" : ""}`}
+                value={form.product_title}
+                onChange={(e) => setField("product_title", e.target.value)}
+                onBlur={() => setTouched((t) => ({ ...t, product_title: true }))}
+              />
+              {fieldError("product_title") && <p className="text-red-500 text-xs mt-1">{fieldError("product_title")}</p>}
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Количество</label>
+              <input
+                type="number"
+                min={1}
+                className={`input ${fieldError("quantity") ? "input-error" : ""}`}
+                value={form.quantity}
+                onChange={(e) => setField("quantity", e.target.value)}
+                onBlur={() => setTouched((t) => ({ ...t, quantity: true }))}
+              />
+              {fieldError("quantity") && <p className="text-red-500 text-xs mt-1">{fieldError("quantity")}</p>}
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={dec}
-              className="h-9 w-9 rounded-md bg-orange-500 text-white text-lg leading-none hover:bg-orange-600"
-              aria-label="Уменьшить"
-            >
-              –
-            </button>
-            <input
-              value={qty}
-              onChange={(e) => {
-                const v = Math.max(1, parseInt(e.target.value || "1", 10));
-                setOrder?.((o) => (o ? { ...o, qty: v } : o));
-              }}
-              className="h-9 w-12 rounded-md border border-slate-300 text-center"
-              inputMode="numeric"
-            />
-            <button
-              type="button"
-              onClick={inc}
-              className="h-9 w-9 rounded-md bg-orange-500 text-white text-lg leading-none hover:bg-orange-600"
-              aria-label="Увеличить"
-            >
-              +
-            </button>
-          </div>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} noValidate>
-        {/* Имя */}
-        <label className="block mb-4">
-          <span className="text-xs text-slate-500">Имя</span>
-          <input
-            autoFocus
-            className={inputCls(touched.name && !!errors.name)}
-            value={form.name}
-            onFocus={() => markTouched("name")}
-            onChange={handleChange("name")}
-            placeholder="Иван"
-            aria-invalid={!!(touched.name && errors.name)}
-          />
-          {touched.name && errors.name && (
-            <div className="text-xs text-red-500 mt-1">{errors.name}</div>
-          )}
-        </label>
-
-        {/* Телефон */}
-        <label className="block mb-4">
-          <span className="text-xs text-slate-500">Мобильный телефон</span>
-          <input
-            className={inputCls(touched.phone && !!errors.phone)}
-            value={form.phone}
-            onFocus={() => markTouched("phone")}
-            onChange={handleChange("phone")}
-            placeholder="+7 (___) ___-__-__"
-            inputMode="tel"
-            aria-invalid={!!(touched.phone && errors.phone)}
-          />
-          {touched.phone && errors.phone && (
-            <div className="text-xs text-red-500 mt-1">{errors.phone}</div>
-          )}
-        </label>
-
-        {/* Email */}
-        <label className="block mb-4">
-          <span className="text-xs text-slate-500">Email</span>
-          <input
-            type="email"
-            className={inputCls(touched.email && !!errors.email)}
-            value={form.email}
-            onFocus={() => markTouched("email")}
-            onChange={handleChange("email")}
-            placeholder="example@mail.ru"
-            aria-invalid={!!(touched.email && errors.email)}
-          />
-          {touched.email && errors.email && (
-            <div className="text-xs text-red-500 mt-1">{errors.email}</div>
-          )}
-        </label>
-
-        {/* Сообщение */}
-        <label className="block mb-4">
-          <span className="text-xs text-slate-500">Сообщение</span>
-          <textarea
-            rows={3}
-            className={textareaCls(touched.message && !!errors.message)}
-            value={form.message}
-            onFocus={() => markTouched("message")}
-            onChange={handleChange("message")}
-            placeholder="Коротко опишите задачу"
-            aria-invalid={!!(touched.message && errors.message)}
-          />
-          {touched.message && errors.message && (
-            <div className="text-xs text-red-500 mt-1">{errors.message}</div>
-          )}
-        </label>
-
-        {/* Согласие */}
-        <label className="flex items-start gap-2 text-sm text-slate-600 mb-2">
-          <input
-            type="checkbox"
-            className={`mt-1 rounded border-slate-300 text-orange-500 focus:ring-orange-500 ${
-              touched.agree && errors.agree ? "ring-1 ring-red-500" : ""
-            }`}
-            checked={form.agree}
-            onFocus={() => markTouched("agree")}
-            onChange={handleChange("agree")}
-          />
-          <span>
-            Соглашаюсь с политикой конфиденциальности и договором оферты
-          </span>
-        </label>
-        {touched.agree && errors.agree && (
-          <div className="text-xs text-red-500 mb-3">{errors.agree}</div>
         )}
 
-        <button
-          type="submit"
-          disabled={!isValid}
-          className={`w-full h-11 rounded-md font-medium transition ${
-            isValid
-              ? "bg-orange-500 text-white hover:bg-orange-600"
-              : "bg-slate-300 text-white cursor-not-allowed"
-          }`}
-        >
-          Отправить
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-sm mb-1">Имя</label>
+            <input
+              type="text"
+              className={`input ${fieldError("name") ? "input-error" : ""}`}
+              value={form.name}
+              onChange={(e) => setField("name", e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+            />
+            {fieldError("name") && <p className="text-red-500 text-xs mt-1">{fieldError("name")}</p>}
+          </div>
+          <div>
+            <label className="block text-sm mb-1">Телефон</label>
+            <input
+              type="tel"
+              className={`input ${fieldError("phone") ? "input-error" : ""}`}
+              placeholder="+998901234567"
+              value={form.phone}
+              onChange={(e) => setField("phone", e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+            />
+            {fieldError("phone") && <p className="text-red-500 text-xs mt-1">{fieldError("phone")}</p>}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="md:col-span-2">
+            <label className="block text-sm mb-1">Email</label>
+            <input
+              type="email"
+              className={`input ${fieldError("email") ? "input-error" : ""}`}
+              value={form.email}
+              onChange={(e) => setField("email", e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+            />
+            {fieldError("email") && <p className="text-red-500 text-xs mt-1">{fieldError("email")}</p>}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm mb-1">Сообщение (необязательно)</label>
+          <textarea
+            className="input h-28 resize-none"
+            value={form.message}
+            onChange={(e) => setField("message", e.target.value)}
+            onBlur={() => setTouched((t) => ({ ...t, message: true }))}
+          />
+        </div>
+
+        {/* Кнопки */}
+        <div className="flex items-center gap-3 pt-2">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary disabled:opacity-60"
+          >
+            {loading ? "Отправка..." : "Отправить"}
+          </button>
+          <button type="button" onClick={closeAndReset} className="btn-secondary">
+            Отмена
+          </button>
+          {okId && <span className="text-green-600 text-sm">Готово! Заявка #{okId}</span>}
+        </div>
       </form>
     </Modal>
   );

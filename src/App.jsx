@@ -1,3 +1,4 @@
+// FILE: src/App.jsx
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -10,23 +11,23 @@ import ContactModal from "./components/Modal/ContactModal.jsx";
 
 export default function App() {
   const [contactOpen, setContactOpen] = useState(false);
-  const [order, setOrder] = useState(null); // { title, img, qty }
+  const [order, setOrder] = useState(null); // { id, title, img, qty }
 
   useEffect(() => {
     const onClick = (e) => {
-      const trigger = e.target.closest("[data-open-contact]");
-      if (!trigger) return;
+      const btn = e.target.closest("[data-open-contact]");
+      if (!btn) return;
 
-      if (trigger.tagName === "A") e.preventDefault();
+      const p = {
+        id: btn.dataset.pId ? Number(btn.dataset.pId) : undefined,
+        title: btn.dataset.pTitle || undefined,
+        img: btn.dataset.pImg || undefined,
+        qty: btn.dataset.pQty ? Number(btn.dataset.pQty) : 1,
+      };
 
-      const title = trigger.getAttribute("data-p-title") || "";
-      const img = trigger.getAttribute("data-p-img") || "";
-
-      // если нажали «связаться с менеджером» (без товара) — просто откроем форму
-      setOrder(title ? { title, img, qty: 1 } : null);
+      setOrder(p.id || p.title ? p : null);
       setContactOpen(true);
     };
-
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
@@ -34,16 +35,13 @@ export default function App() {
   return (
     <>
       <Header />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
-
       <FooterAbout />
-
       <ContactModal
         open={contactOpen}
         onClose={() => setContactOpen(false)}
