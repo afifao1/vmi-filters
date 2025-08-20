@@ -97,6 +97,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
+
     'key' => env('APP_KEY'),
 
     'previous_keys' => [
