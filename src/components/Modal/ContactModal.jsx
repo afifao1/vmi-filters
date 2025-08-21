@@ -1,4 +1,3 @@
-// FILE: src/components/Modal/ContactModal.jsx
 import { useEffect, useMemo, useState } from "react";
 import Modal from "./Modal";
 

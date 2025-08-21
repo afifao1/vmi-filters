@@ -19,30 +19,34 @@ class SendLeadNotifications implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var int максимальное число попыток */
     public int $tries = 3;
-
-    /** @var int таймаут задачи (сек) */
     public int $timeout = 15;
 
     public function __construct(public Lead $lead) {}
 
     public function handle(TelegramService $telegram): void
     {
-        // Email (в dev при MAIL_MAILER=log уйдет в storage/logs/laravel.log)
+        // 1) Email (не валим джобу, если почта недоступна)
         $to = env('SALES_TO');
         if (!empty($to)) {
-            Mail::to($to)->send(new LeadCreatedMail($this->lead));
+            try {
+                Mail::to($to)->send(new LeadCreatedMail($this->lead));
+            } catch (\Throwable $ex) {
+                Log::error('Mail send failed', [
+                    'to' => $to,
+                    'error' => $ex->getMessage(),
+                ]);
+                // продолжаем — телеграм отправим в любом случае
+            }
         } else {
             Log::warning('SALES_TO is empty, skipping email notification.');
         }
 
-        // Заголовок по типу
+        // 2) Telegram (как договорились: разные заголовки, без URL, Ташкент)
         $title = $this->lead->type === 'product'
             ? '🛒 <b>Заявка на товар</b>'
             : '📞 <b>Связаться с менеджером</b>';
 
-        // Часовой пояс для часов — из конфигурации (см. APP_TIMEZONE)
         $tz = config('app.timezone', 'UTC');
         $timeLocal = now()->setTimezone($tz)->format('d.m.Y H:i');
 
@@ -54,7 +58,6 @@ class SendLeadNotifications implements ShouldQueue
             '<b>Телефон:</b> ' . e($this->lead->phone),
             '<b>Email:</b> ' . e($this->lead->email),
         ];
-
         if ($this->lead->message) {
             $lines[] = '<b>Сообщение:</b> ' . e($this->lead->message);
         }
@@ -62,11 +65,7 @@ class SendLeadNotifications implements ShouldQueue
             $qty = (int)($this->lead->quantity ?? 1);
             $lines[] = '🧩 <b>Товар:</b> ' . e($this->lead->product_title) . ' × ' . $qty;
         }
-        if ($this->lead->source) {
-            $lines[] = '🧭 <b>Источник:</b> ' . e($this->lead->source);
-        }
-
-        // URL убран по просьбе
+        // Источник и URL — убраны по твоей просьбе
         $lines[] = '🕒 ' . $timeLocal . ' (Ташкент)';
 
         $telegram->send(implode("\n", $lines));
