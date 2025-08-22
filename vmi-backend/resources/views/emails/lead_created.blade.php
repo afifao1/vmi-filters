@@ -1,5 +1,5 @@
 @component('mail::message')
-# Новая заявка
+# {{ $lead->type === 'contact' ? 'Связаться с менеджером' : 'Оставить заявку' }}
 
 **Тип:** {{ $lead->type }}
 
@@ -20,16 +20,6 @@
 @isset($lead->source)
 **Источник:** {{ $lead->source }}
 @endisset
-
-@isset($lead->source_url)
-**URL:** {{ $lead->source_url }}
-@endisset
-
-@component('mail::panel')
-ID: {{ $lead->id }}
-IP: {{ $lead->ip }}
-User-Agent: {{ Str::limit($lead->user_agent, 120) }}
-@endcomponent
 
 Спасибо,
 {{ config('app.name') }}

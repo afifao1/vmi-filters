@@ -22,12 +22,15 @@ class LeadCreatedMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $subject = $this->lead->type === 'contact'
+            ? 'Связаться с менеджером #' . $this->lead->id
+            : 'Оставить заявку #' . $this->lead->id;
+
         return new Envelope(
-            subject: 'Новая заявка #' . $this->lead->id,
+            subject: $subject,
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME', 'VMI')),
         );
     }
-
 
     public function content(): Content
     {
