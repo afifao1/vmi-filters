@@ -31,3 +31,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('throttle:20,1')->group(function () {
     Route::post('/leads', [LeadController::class, 'store'])->name('api.leads.store');
 });
+
