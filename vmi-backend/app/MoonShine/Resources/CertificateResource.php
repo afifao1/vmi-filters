@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\Certificate;
-
-// MoonShine v3 namespaces
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\Fields\{ID, Text, Image};
+use MoonShine\Laravel\Fields\{ID, Text, Image, Date, Textarea};
 use MoonShine\Laravel\Decorations\Block;
 
 final class CertificateResource extends ModelResource
@@ -19,33 +17,27 @@ final class CertificateResource extends ModelResource
     public function fields(): array
     {
         return [
-            Block::make([
+            Block::make('Основное', [
                 ID::make()->sortable(),
-
-                Text::make('Title', 'title')
-                    ->nullable()
-                    ->hint('Доп. подпись/название'),
-
-                Image::make('Image', 'image')
+                Text::make('Заголовок', 'title')->nullable(),
+                Textarea::make('Описание', 'description')->nullable(),
+                Date::make('Дата', 'issued_at')->nullable(),
+                Image::make('Файл/изображение', 'image')
                     ->disk('public')
                     ->dir('certificates')
-                    ->allowedExtensions(['png','jpg','jpeg','webp'])
-                    ->required()
+                    ->allowedExtensions(['jpg','jpeg','png','webp','svg','pdf'])
                     ->removable()
                     ->downloadable(),
             ]),
         ];
     }
 
-    public function search(): array
-    {
-        return ['id', 'title'];
-    }
-
     public function rules($item): array
     {
         return [
             'title' => ['nullable','string','min:2'],
+            'description' => ['nullable','string'],
+            'issued_at' => ['nullable','date'],
             'image' => ['required','string'],
         ];
     }
@@ -53,5 +45,10 @@ final class CertificateResource extends ModelResource
     public function sort(): array
     {
         return ['id' => 'desc'];
+    }
+
+    public function icon(): string
+    {
+        return 'document';
     }
 }
