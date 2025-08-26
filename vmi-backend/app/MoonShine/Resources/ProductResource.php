@@ -8,108 +8,100 @@ use App\Models\Product;
 use App\Models\Brand;
 use Illuminate\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\Fields\{ID, Text, Select, Number, Image, Slug, Switcher};
+use MoonShine\Laravel\Fields\{
+    ID, Text, Slug, Switcher, Number, Image, Select, Textarea
+};
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Decorations\Block;
-use MoonShine\UI\Fields\{Select as UISelect, Range as UIRange};
 use MoonShine\Laravel\QueryTags\QueryTag;
 
 final class ProductResource extends ModelResource
 {
     protected string $model = Product::class;
     protected string $title = 'Products';
-    protected ?string $subTitle = 'Каталог продукции';
+
+    public function uriKey(): string
+    {
+        return 'product-resource';
+    }
+
+    public function icon(): string
+    {
+        return 'document';
+    }
+
+    public function query(): Builder
+    {
+        return parent::query()->with('brand');
+    }
 
     public function fields(): array
     {
+        \Log::info('Fields loaded in ProductResource');
         return [
-            Block::make('Основное', [
+            Block::make([
                 ID::make()->sortable(),
 
-                Text::make('Название', 'title')->required(),
+                Text::make('Title', 'title')->required(),
 
-                Slug::make('Slug', 'slug')
-                    ->from('title')
-                    ->unique(),
+                Slug::make('Slug', 'slug')->from('title')->unique(),
 
-                BelongsTo::make('Бренд', 'brand', resource: BrandResource::class)
-                    ->nullable(),
+                BelongsTo::make('Brand', 'brand', fn (Brand $b) => $b->name)
+                    ->required()
+                    ->searchable(),
 
-                Text::make('Производитель (строка)', 'manufacturer')
-                    ->hint('Если выбран бренд, это поле можно оставить пустым — на фронтенде будет показано имя бренда.'),
+                Text::make('Manufacturer', 'manufacturer')->required(),
 
-                Select::make('Тип', 'type')
+                Select::make('Status', 'status')
                     ->options([
-                        'fuel' => 'Топливный',
-                        'oil'  => 'Масляный',
-                        'air'  => 'Воздушный',
-                        'pump' => 'Насос/прочее',
-                    ])->required(),
+                        'in_stock' => 'In stock',
+                        'preorder' => 'Preorder',
+                    ])
+                    ->required(),
 
-                Select::make('Статус', 'status')
+                Select::make('Type', 'type')
                     ->options([
-                        'in_stock' => 'В наличии',
-                        'preorder' => 'На заказ',
-                    ])->required(),
+                        'fuel' => 'Fuel',
+                        'oil'  => 'Oil',
+                        'air'  => 'Air',
+                        'pump' => 'Pump',
+                    ])
+                    ->required(),
 
-                Number::make('Мощность', 'power')
-                    ->min(0)->step(1)->nullable(),
+                Number::make('Power', 'power')->min(0)->step(1),
 
-                Image::make('Изображение', 'img')
-                    ->disk('public')
+                Image::make('Image', 'img')
+                    ->disk(config('filesystems.default', 'public'))
                     ->dir('products')
-                    ->allowedExtensions(['jpg','jpeg','png','webp','svg'])
-                    ->removable()
-                    ->downloadable(),
+                    ->removable(),
 
-                Text::make('Краткое описание', 'short')->nullable(),
+                Number::make('Popularity', 'popularity')->min(0)->step(1),
 
-                Switcher::make('Активен', 'is_active')->default(true),
+                Switcher::make('Active', 'is_active'),
+
+                Textarea::make('Short', 'short')->hideOnIndex(),
             ]),
         ];
     }
 
     public function rules($item): array
     {
-        $id = is_object($item) && isset($item->id) ? $item->id : null;
-
         return [
-            'title' => ['required','string','min:2'],
-            'slug'  => ['nullable','string','unique:products,slug,' . ($id ?? 'NULL')],
-            'type'  => ['required','in:fuel,oil,air,pump'],
-            'status'=> ['required','in:in_stock,preorder'],
-            'power' => ['nullable','integer','min:0'],
-            'img'   => ['nullable','string'],
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug,' . ($item->id ?? 'NULL')],
+            'brand_id' => ['required', 'exists:brands,id'],
+            'manufacturer' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'in:in_stock,preorder'],
+            'type' => ['required', 'in:fuel,oil,air,pump'],
+            'power' => ['nullable', 'integer', 'min:0'],
+            'popularity' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['boolean'],
         ];
     }
 
-    protected function filters(): iterable
+    public function search(): array
     {
-        return [
-            UISelect::make('Бренд', 'brand_id')
-                ->options(Brand::query()->orderBy('name')->pluck('name','id')->all())
-                ->nullable()
-                ->onApply(fn(Builder $q, $value) => $q->where('brand_id', $value)),
-
-            UISelect::make('Статус', 'status')
-                ->options(['in_stock' => 'В наличии', 'preorder' => 'На заказ'])
-                ->nullable(),
-
-            UISelect::make('Тип', 'type')
-                ->options(['fuel'=>'Топливный','oil'=>'Масляный','air'=>'Воздушный','pump'=>'Насос/прочее'])
-                ->nullable(),
-
-            UIRange::make('Мощность', 'power'),
-        ];
-    }
-
-    protected function queryTags(): array
-    {
-        return [
-            QueryTag::make('В наличии', fn(Builder $q) => $q->where('status','in_stock')),
-            QueryTag::make('На заказ',  fn(Builder $q) => $q->where('status','preorder')),
-        ];
+        return ['id', 'title', 'manufacturer', 'slug'];
     }
 
     public function sort(): array
@@ -117,8 +109,40 @@ final class ProductResource extends ModelResource
         return ['id' => 'desc'];
     }
 
-    public function icon(): string
+    public function queryTags(): array
     {
-        return 'folder';
+        return [
+            QueryTag::make('Active', fn (Builder $q) => $q->where('is_active', true)),
+            QueryTag::make('Inactive', fn (Builder $q) => $q->where('is_active', false)),
+        ];
     }
+
+//  public function authorize(): array
+// {
+//     return [
+//         'viewAny' => true, 'view' => true, 'create' => true,
+//         'update' => true, 'delete' => true, 'massDelete' => true,
+//     ];
+// }
+
+public function authorize(): array
+{
+    return [
+        'viewAny' => true,
+        'view' => true,
+        'create' => true,
+        'update' => true,
+        'delete' => true,
+        'restore' => true,
+        'forceDelete' => true,
+        'massDelete' => true,
+        'viewOwn' => true,
+        'updateOwn' => true,
+        'deleteOwn' => true,
+    ];
+}
+
+
+
+
 }

@@ -6,7 +6,7 @@ namespace App\MoonShine\Resources;
 
 use App\Models\Certificate;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\Fields\{ID, Text, Image, Date, Textarea};
+use MoonShine\Laravel\Fields\{ID, Text, Textarea, Image, Date};
 use MoonShine\Laravel\Decorations\Block;
 
 final class CertificateResource extends ModelResource
@@ -14,20 +14,28 @@ final class CertificateResource extends ModelResource
     protected string $model = Certificate::class;
     protected string $title = 'Certificates';
 
+    public function uriKey(): string
+    {
+        return 'certificate-resource';
+    }
+
+    public function icon(): string
+    {
+        return 'document';
+    }
+
     public function fields(): array
     {
         return [
-            Block::make('Основное', [
+            Block::make([
                 ID::make()->sortable(),
-                Text::make('Заголовок', 'title')->nullable(),
-                Textarea::make('Описание', 'description')->nullable(),
-                Date::make('Дата', 'issued_at')->nullable(),
-                Image::make('Файл/изображение', 'image')
-                    ->disk('public')
+                Text::make('Title', 'title')->required(),
+                Image::make('Image', 'image')
+                    ->disk(config('filesystems.default', 'public'))
                     ->dir('certificates')
-                    ->allowedExtensions(['jpg','jpeg','png','webp','svg','pdf'])
-                    ->removable()
-                    ->downloadable(),
+                    ->removable(),
+                Textarea::make('Description', 'description')->hideOnIndex(),
+                Date::make('Issued at', 'issued_at')->format('Y-m-d')->nullable(),
             ]),
         ];
     }
@@ -35,11 +43,16 @@ final class CertificateResource extends ModelResource
     public function rules($item): array
     {
         return [
-            'title' => ['nullable','string','min:2'],
-            'description' => ['nullable','string'],
-            'issued_at' => ['nullable','date'],
-            'image' => ['required','string'],
+            'title' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'issued_at' => ['nullable', 'date'],
         ];
+    }
+
+    public function search(): array
+    {
+        return ['id', 'title'];
     }
 
     public function sort(): array
@@ -47,8 +60,13 @@ final class CertificateResource extends ModelResource
         return ['id' => 'desc'];
     }
 
-    public function icon(): string
-    {
-        return 'document';
-    }
+public function authorize(): array
+{
+    return [
+        'viewAny' => true, 'view' => true, 'create' => true,
+        'update' => true, 'delete' => true, 'massDelete' => true,
+    ];
+}
+
+
 }

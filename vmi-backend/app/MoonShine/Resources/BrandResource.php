@@ -6,7 +6,7 @@ namespace App\MoonShine\Resources;
 
 use App\Models\Brand;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\Fields\{ID, Text, Image, Slug};
+use MoonShine\Laravel\Fields\{ID, Text, Slug, Image};
 use MoonShine\Laravel\Decorations\Block;
 
 final class BrandResource extends ModelResource
@@ -14,32 +14,42 @@ final class BrandResource extends ModelResource
     protected string $model = Brand::class;
     protected string $title = 'Brands';
 
+    public function uriKey(): string
+    {
+        return 'brand-resource';
+    }
+
+    public function icon(): string
+    {
+        return 'tag';
+    }
+
     public function fields(): array
     {
         return [
-            Block::make('Основное', [
+            Block::make([
                 ID::make()->sortable(),
-                Text::make('Название', 'name')->required(),
+                Text::make('Name', 'name')->required(),
                 Slug::make('Slug', 'slug')->from('name')->unique(),
-                Image::make('Логотип', 'logo')
-                    ->disk('public')
+                Image::make('Logo', 'logo')
+                    ->disk(config('filesystems.default', 'public'))
                     ->dir('brands')
-                    ->allowedExtensions(['jpg','jpeg','png','webp','svg'])
-                    ->removable()
-                    ->downloadable(),
+                    ->removable(),
             ]),
         ];
     }
 
     public function rules($item): array
     {
-        $id = is_object($item) && isset($item->id) ? $item->id : null;
-
         return [
-            'name' => ['required','string','min:2','unique:brands,name,' . ($id ?? 'NULL')],
-            'slug' => ['nullable','string','unique:brands,slug,' . ($id ?? 'NULL')],
-            'logo' => ['nullable','string'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:brands,slug,' . ($item->id ?? 'NULL')],
         ];
+    }
+
+    public function search(): array
+    {
+        return ['id', 'name', 'slug'];
     }
 
     public function sort(): array
@@ -47,8 +57,12 @@ final class BrandResource extends ModelResource
         return ['id' => 'desc'];
     }
 
-    public function icon(): string
-    {
-        return 'tag';
-    }
+public function authorize(): array
+{
+    return [
+        'viewAny' => true, 'view' => true, 'create' => true,
+        'update' => true, 'delete' => true, 'massDelete' => true,
+    ];
+}
+
 }

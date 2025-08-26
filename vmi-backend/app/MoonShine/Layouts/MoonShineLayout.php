@@ -21,21 +21,23 @@ use App\MoonShine\Resources\CertificateResource;
 
 final class MoonShineLayout extends AppLayout
 {
-    protected function assets(): array
-    {
-        return [ ...parent::assets() ];
-    }
-
-    protected function menu(): array
+protected function menu(): array
     {
         return [
-            MenuItem::make('Dashboard', route('moonshine.index'))
-                ->icon('home'),
+            MenuItem::make('Dashboard', route('moonshine.index'))->icon('home'),
 
             MenuGroup::make('Catalog', [
-                MenuItem::make('Products', ProductResource::class)->icon('folder'),
-                MenuItem::make('Brands', BrandResource::class)->icon('tag'),
-                MenuItem::make('Certificates', CertificateResource::class)->icon('document'),
+                MenuItem::make('Products', route('moonshine.crud.index', [
+                    'resourceUri' => 'product-resource',
+                ]))->icon('folder'),
+
+                MenuItem::make('Brands', route('moonshine.crud.index', [
+                    'resourceUri' => 'brand-resource',
+                ]))->icon('tag'),
+
+                MenuItem::make('Certificates', route('moonshine.crud.index', [
+                    'resourceUri' => 'certificate-resource',
+                ]))->icon('document'),
             ])->icon('archive-box'),
         ];
     }

@@ -8,84 +8,49 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
-use MoonShine\Laravel\Forms\FiltersForm;
-use MoonShine\Laravel\Forms\LoginForm;
 use MoonShine\Laravel\Http\Middleware\Authenticate;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
 use MoonShine\Laravel\Models\MoonshineUser;
-use MoonShine\Laravel\Pages\Dashboard;
-use MoonShine\Laravel\Pages\ErrorPage;
-use MoonShine\Laravel\Pages\LoginPage;
-use MoonShine\Laravel\Pages\ProfilePage;
+use App\Http\Middleware\UseMoonshineGuard;
+use App\MoonShine\Layouts\MoonShineLayout;
 
 return [
+    // Базовый префикс админки
+    'prefix' => 'admin',
 
-    'layout' => \App\MoonShine\Layouts\MoonShineLayout::class,
-
-    'title' => env('MOONSHINE_TITLE', 'MoonShine'),
-    'logo' => 'vendor/moonshine/logo.svg',
-    'logo_small' => 'vendor/moonshine/logo-small.svg',
-
-    'use_migrations' => true,
-    'use_notifications' => true,
-    'use_database_notifications' => true,
+    // Включаем маршруты MoonShine
     'use_routes' => true,
-    'use_profile' => true,
 
-    'domain' => env('MOONSHINE_DOMAIN'),
-    'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
-    'page_prefix' => env('MOONSHINE_PAGE_PREFIX', 'page'),
-    'resource_prefix' => env('MOONSHINE_RESOURCE_PREFIX', 'resource'),
+    // Домашняя страница MoonShine
     'home_route' => 'moonshine.index',
 
-    'not_found_exception' => MoonShineNotFoundException::class,
+    // Guard админки
+    'guard' => 'moonshine',
 
-    'middleware' => [
-        EncryptCookies::class,
-        AddQueuedCookiesToResponse::class,
-        StartSession::class,
-        AuthenticateSession::class,
-        ShareErrorsFromSession::class,
-        VerifyCsrfToken::class,
-        SubstituteBindings::class,
-        ChangeLocale::class,
-    ],
+    // Модель пользователя MoonShine
+    'user_model' => MoonshineUser::class,
 
-    'disk' => 'public',
-    'disk_options' => [],
-    'cache' => 'file',
+    // Наш кастомный layout
+    'layout' => MoonShineLayout::class,
 
-    'auth' => [
-        'enabled' => true,
-        'guard' => 'moonshine',
-        'model' => MoonshineUser::class,
-        'middleware' => Authenticate::class,
-        'pipelines' => [],
-    ],
-
-    'user_fields' => [
-        'username' => 'email',
-        'password' => 'password',
-        'name' => 'name',
-        'avatar' => 'avatar',
-    ],
-
-    'forms' => [
-        'login' => LoginForm::class,
-        'filters' => FiltersForm::class,
-    ],
-
-    'pages' => [
-        'dashboard' => Dashboard::class,
-        'profile' => ProfilePage::class,
-        'login' => LoginPage::class,
-        'error' => ErrorPage::class,
-    ],
-
+    // Локализация
     'locale' => 'en',
     'locale_key' => ChangeLocale::KEY,
     'locales' => [
-        // сюда можно добавить 'ru' => 'Русский', 'uz' => 'Oʻzbekcha'
+        // 'ru' => 'Русский',
+        // 'uz' => 'Oʻzbekcha',
     ],
+
+    // Маршруты и middleware (минимально необходимый стек для сессий/CSRF)
+    'route' => [
+        'domain' => null,
+        'middleware' => [
+            'web',
+            UseMoonshineGuard::class,
+            ChangeLocale::class,
+            Authenticate::class,
+        ],
+    ],
+
+    // Страницы по умолчанию из MoonShine; явная карта не требуется
 ];
