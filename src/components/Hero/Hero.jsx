@@ -48,11 +48,11 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className="justify-self-end overflow-visible -mr-24 xl:-mr-32 2xl:-mr-40">
+        <div className="justify-self-end -translate-x-1/4 overflow-visible -mr-24 xl:-mr-32 2xl:-mr-40">
           <img
             src="/images/filters.png"
             alt="Фильтры"
-            className="block object-contain
+            className="block object-contain h-full
                        w-[700px] xl:w-[820px] 2xl:w-[920px]"
           />
         </div>

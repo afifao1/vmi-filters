@@ -6,7 +6,7 @@ import ContactCta from "../components/Contact/ContactCta.jsx";
 
 export default function Home() {
   return (
-    <main>
+    <main className={"overflow-x-hidden"}>
       <Hero />
       <CategoriesAccordion />
       <Brands />
