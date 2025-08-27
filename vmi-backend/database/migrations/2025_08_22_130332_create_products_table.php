@@ -13,7 +13,7 @@ return new class extends Migration {
             $t->enum('status', ['in_stock','preorder'])->index();
             $t->enum('type', ['fuel','oil','air','pump'])->index();
             $t->integer('power')->nullable()->index();
-            $t->string('img')->nullable();   
+            $t->string('img')->nullable();
             $t->unsignedSmallInteger('popularity')->default(0);
             $t->timestamps();
         });
