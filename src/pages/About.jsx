@@ -1,19 +1,53 @@
+import { useState, useEffect } from "react";
 import { FiPackage, FiUser, FiThumbsUp } from "react-icons/fi";
+import api from "../api";
 
 export default function About() {
+  const [certificates, setCertificates] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+
+    api
+      .get("/certificates")
+      .then(({ data }) => {
+        if (!cancelled) {
+          const apiCerts = Array.isArray(data?.data)
+            ? data.data
+            : Array.isArray(data)
+              ? data
+              : [];
+          setCertificates(apiCerts);
+        }
+      })
+      .catch((error) => {
+        console.warn("Failed to load certificates from API:", error.message);
+        // Keep fallback empty array on error
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   return (
     <main className="pt-28 bg-[var(--page-bg)]">
       <section className="py-10 md:py-16">
         <div className="container-max grid items-center gap-10 md:grid-cols-2">
           <div className="space-y-6">
             <h1 className="text-slate-900 font-extrabold uppercase leading-tight text-5xl md:text-6xl">
-              О компании<br /> VMI-Filter
+              О компании
+              <br /> VMI-Filter
             </h1>
             <p className="text-slate-600 text-lg leading-7">
-              Мы специализируемся на поставках высококачественных
-              промышленных фильтров, насосов и расходных материалов.
-              Работаем с проверенными поставщиками и помогаем подобрать
-              оптимальные решения под задачи клиента.
+              Мы специализируемся на поставках высококачественных промышленных
+              фильтров, насосов и расходных материалов. Работаем с проверенными
+              поставщиками и помогаем подобрать оптимальные решения под задачи
+              клиента.
             </p>
           </div>
 
@@ -105,30 +139,54 @@ export default function About() {
 
             <div className="grid gap-6 md:gap-10 md:grid-cols-[420px,1fr]">
               <h2 className="leading-tight font-semibold text-[34px] md:text-[40px]">
-                <span className="text-orange-500">Сертификаты</span><br />
+                <span className="text-orange-500">Сертификаты</span>
+                <br />
                 <span className="text-slate-900">брендов</span>
               </h2>
               <p className="text-slate-600 text-[15px] leading-7 max-w-[540px]">
-                Сертификаты перечисленных брендов в активе компании — это доказательство
-                стабильности и успешности предприятия, большого опыта и доверия покупателей.
+                Сертификаты перечисленных брендов в активе компании — это
+                доказательство стабильности и успешности предприятия, большого
+                опыта и доверия покупателей.
               </p>
             </div>
           </div>
 
+          {loading && (
+            <div className="text-slate-500 mb-6">Загрузка сертификатов…</div>
+          )}
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {["1","2","3","4"].map(n => (
-              <div
-                key={n}
-                className="bg-white border border-slate-200 rounded-xl shadow-sm p-3 flex items-center justify-center"
-              >
-                <img
-                  src={`/images/cert-${n}.png`}
-                  alt={`Сертификат ${n}`}
-                  className="h-[320px] lg:h-[360px] w-auto object-contain"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {certificates.length > 0
+              ? certificates.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="bg-white border border-slate-200 rounded-xl shadow-sm p-3 flex items-center justify-center"
+                  >
+                    <img
+                      src={cert.file}
+                      alt={cert.title}
+                      className="h-[320px] lg:h-[360px] w-auto object-contain"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  </div>
+                ))
+              : // Fallback certificates if API is empty or failed
+                ["1", "2", "3", "4"].map((n) => (
+                  <div
+                    key={n}
+                    className="bg-white border border-slate-200 rounded-xl shadow-sm p-3 flex items-center justify-center"
+                  >
+                    <img
+                      src={`/images/cert-${n}.png`}
+                      alt={`Сертификат ${n}`}
+                      className="h-[320px] lg:h-[360px] w-auto object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
           </div>
         </div>
       </section>
@@ -138,7 +196,10 @@ export default function About() {
           <div className="grid gap-8 md:gap-10 md:grid-cols-[1fr,440px] items-start py-8 md:py-10">
             <div>
               <h3 className="text-slate-900 text-[34px] md:text-[44px] leading-tight font-light">
-                Напишите нам <span className="text-orange-500 font-normal">прямо сейчас</span>
+                Напишите нам{" "}
+                <span className="text-orange-500 font-normal">
+                  прямо сейчас
+                </span>
               </h3>
 
               <p className="text-slate-600 mt-3 font-normal">
